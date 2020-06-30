@@ -1,6 +1,7 @@
 import { Resolver, Query, Arg, Authorized, Mutation, Ctx } from 'type-graphql';
 import User, { UserClass } from '../../entities/User';
 import { Context } from '../../Context';
+import { isValidObjectId } from 'mongoose';
 
 @Resolver(() => UserClass)
 class UserResolver {
@@ -11,6 +12,8 @@ class UserResolver {
 
   @Query(() => UserClass, { nullable: true })
   async user(@Arg('id') id: string): Promise<UserClass | null> {
+    if (!isValidObjectId(id)) return null;
+
     return await User.findById(id);
   }
 
