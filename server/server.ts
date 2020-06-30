@@ -1,25 +1,68 @@
 import 'reflect-metadata';
 import 'colors';
 import express from 'express';
+import passport from 'passport';
+import session from 'express-session';
 import { ApolloServer } from 'apollo-server-express';
-import { buildSchema, Query, Resolver } from 'type-graphql';
-import { connectDatabase } from './config/db';
+import { buildSchema } from 'type-graphql';
+import connectMongo from 'connect-mongodb-session';
+import { createOnConnect } from 'graphql-passport';
 
-@Resolver()
-class HelloResolver {
-  @Query(() => String)
-  hello(): string {
-    return 'Hello World';
-  }
-}
+import './config/passport';
+import { connectDatabase } from './config/db';
+import Resolvers from './resolvers/Resolvers';
+import authRouter from './routes/auth';
+import isAuth from './utils/isAuth';
+import contextFn from './Context';
+
+const MongoStore = connectMongo(session);
+const sessionMiddleware = session({
+  store: new MongoStore({
+    uri: process.env.MONGO_URI as string,
+    collection: 'sessions',
+    expires: 1000 * 60 * 60 * 24 * 7,
+  }),
+  secret: process.env.SESSION_SECRET as string,
+  name: 'sid',
+  saveUninitialized: false,
+  resave: false,
+  cookie: { httpOnly: true, secure: process.env.NODE_ENV === 'production' },
+});
+
+const passportMiddleware = passport.initialize();
+const passportSessionMiddleware = passport.session();
+
+const app = express();
+
+app.use(sessionMiddleware);
+app.use(passportMiddleware);
+app.use(passportSessionMiddleware);
+
+app.use('/auth', authRouter);
 
 (async () => {
-  const app = express();
   const schema = await buildSchema({
-    resolvers: [HelloResolver],
+    resolvers: Resolvers as any,
+    authChecker: isAuth,
   });
 
-  const server = new ApolloServer({ schema });
+  const server = new ApolloServer({
+    schema,
+    context: contextFn,
+    subscriptions: {
+      path: '/subscriptions',
+      onConnect: createOnConnect([
+        sessionMiddleware as any,
+        passportSessionMiddleware,
+        passportMiddleware,
+      ]) as any,
+    },
+    playground: {
+      settings: {
+        'request.credentials': 'include',
+      },
+    },
+  });
 
   server.applyMiddleware({ app });
 
