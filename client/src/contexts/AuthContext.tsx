@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  User,
   useLogoutUserMutation,
   useCurrentUserLazyQuery,
 } from '../graphql/generated/graphql';
@@ -9,19 +10,22 @@ interface AuthContextState {
   isAuth: boolean;
   login: () => void;
   logout: () => void;
-  me: any;
+  me: User | null;
+  isLoading: boolean;
 }
 
 export const AuthContext = React.createContext<AuthContextState>({
-  login: () => {},
   isAuth: false,
-  logout: () => {},
+  isLoading: true,
   me: null,
+  login: () => {},
+  logout: () => {},
 });
 
-const AuthContextProvider = (props: any) => {
+const AuthContextProvider: React.FC = (props: any) => {
   const [isAuth, setIsAuth] = useState(false);
   const [me, setMe] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [login] = useCurrentUserLazyQuery({
     fetchPolicy: 'network-only',
@@ -29,13 +33,16 @@ const AuthContextProvider = (props: any) => {
       if (data.me) {
         setMe(data.me as any);
         setIsAuth(true);
-        Toast('Logged In', 'success');
       } else {
         setMe(null);
         setIsAuth(false);
       }
+      setIsLoading(false);
     },
     onError: () => {
+      setIsLoading(false);
+      setIsAuth(false);
+      setMe(null);
       Toast('Authentication Error', 'error');
     },
   });
@@ -44,15 +51,18 @@ const AuthContextProvider = (props: any) => {
     onCompleted: () => {
       setIsAuth(false);
       setMe(null);
+      setIsLoading(false);
       Toast('Logged out', 'success');
     },
     onError: () => {
-      Toast('Authentication Error', 'error');
+      window.location.href = '/';
     },
   });
 
   return (
-    <AuthContext.Provider value={{ isAuth, login, logout, me }}>
+    <AuthContext.Provider
+      value={{ isAuth, login, logout, me, isLoading: isLoading }}
+    >
       {props.children}
     </AuthContext.Provider>
   );

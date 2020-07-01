@@ -10,7 +10,16 @@ router.get(
     if (req.session && req.session.passport && req.session.passport.user) {
       const user = await User.findById(req.session.passport.user);
       if (user) {
-        return res.redirect('/');
+        return res.send(`
+        <script>
+          if(window.opener){
+            const originUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
+            window.opener.postMessage('SESSION_EXISTS', originUrl);
+            window.onload = window.close();
+          }
+          window.location.href="/"
+        </script>
+        `);
       }
     }
     next();
@@ -55,9 +64,9 @@ router.get('/success', (req, res) => {
       <h2>You are authorized.</h2>
   
       <script>
-        window.onload = window.close();
-        const originUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
-        window.opener.postMessage('SUCCESS', originUrl);
+      const originUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
+      window.opener.postMessage('SUCCESS', originUrl);
+      window.onload = window.close();
       </script>
     </body>
   </html>

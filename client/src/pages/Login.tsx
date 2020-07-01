@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import Toast from '../components/Toast';
 
 let oAuthWindow = (callback: any) => {
   const url: string =
@@ -22,11 +23,15 @@ const LoginPage: React.FC = () => {
 
   const onLoginSuccess = () => {
     authContext.login();
+    Toast('Logged In', 'success');
   };
 
   return (
     <div>
-      <button className="btn" onClick={() => oAuthWindow(onLoginSuccess)}>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => oAuthWindow(onLoginSuccess)}
+      >
         Login
       </button>
     </div>
