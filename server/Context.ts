@@ -20,7 +20,7 @@ export interface Context
   currentUser: ICurrentUser;
 }
 
-const pubsub = new PubSub();
+export const pubsub = new PubSub();
 
 const contextFn = ({ req, res, connection }: ExpressContext): Context => {
   let context = connection && connection.context;

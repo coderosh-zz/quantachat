@@ -13,7 +13,7 @@ import { connectDatabase } from './config/db';
 import Resolvers from './resolvers/Resolvers';
 import authRouter from './routes/auth';
 import isAuth from './utils/isAuth';
-import contextFn from './Context';
+import contextFn, { pubsub } from './Context';
 
 const MongoStore = connectMongo(session);
 const sessionMiddleware = session({
@@ -44,6 +44,10 @@ app.use('/auth', authRouter);
   const schema = await buildSchema({
     resolvers: Resolvers as any,
     authChecker: isAuth,
+    pubSub: pubsub,
+    emitSchemaFile: {
+      path: './server/graphql/schema.gql',
+    },
   });
 
   const server = new ApolloServer({

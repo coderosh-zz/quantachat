@@ -27,10 +27,10 @@ export class UserClass {
   name!: string;
 
   @Field()
-  createdAt?: string;
+  createdAt?: Date;
 
   @Field()
-  updatedAt?: string;
+  updatedAt?: Date;
 
   @Field()
   @prop({ required: true, unique: true })
