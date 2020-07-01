@@ -1,0 +1,19 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.Toastify__toast--success {
+    background-color: #222121;
+    color: rgb(106, 214, 106);
+  }
+  
+  .Toastify__toast {
+    min-height: 30px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .Toastify__toast-container {
+    width: max-content!important;
+  }
+  

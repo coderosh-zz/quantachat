@@ -54,11 +54,10 @@ router.get('/success', (req, res) => {
     <body>
       <h2>You are authorized.</h2>
   
-      <!-- Test Script -->
       <script>
-        setTimeout(() => {
-          window.location.href = '/graphql';
-        }, 2000)
+        window.onload = window.close();
+        const originUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
+        window.opener.postMessage('SUCCESS', originUrl);
       </script>
     </body>
   </html>

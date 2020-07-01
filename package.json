@@ -6,12 +6,14 @@
   "license": "MIT",
   "scripts": {
     "dev:server": "cross-env NODE_ENV=development ts-node-dev -r dotenv/config --transpileOnly --no-notify server/server.ts",
-    "dev:client": "cross-env NODE_ENV=development npm start --prefix client",
+    "dev:client": "cross-env SKIP_PREFLIGHT_CHECK=true npm start --prefix client",
     "build:server": "tsc",
     "build:client": "npm run build --prefix client",
+    "build:css": "npm run build:css --prefix client",
     "develop": "cross-env NODE_ENV=development concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "build": "concurrently \"npm run build:server\" \"npm run build:client\"",
     "lint": "eslint . --fix --ext .ts",
+    "codegen": "npm run codegen --prefix client",
     "start": "node dist/server.js"
   },
   "dependencies": {

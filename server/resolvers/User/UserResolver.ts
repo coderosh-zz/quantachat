@@ -17,6 +17,12 @@ class UserResolver {
     return await User.findById(id);
   }
 
+  // @Authorized()
+  @Query(() => UserClass, { nullable: true })
+  async me(@Ctx() context: Context): Promise<UserClass | undefined> {
+    return context.getUser();
+  }
+
   @Authorized()
   @Mutation(() => Boolean)
   logout(@Ctx() context: Context): Promise<boolean> {
