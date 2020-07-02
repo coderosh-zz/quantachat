@@ -86,7 +86,7 @@ class UserResolver {
 
       await User.findByIdAndUpdate(
         context.currentUser._id,
-        { $pull: friend._id },
+        { $pull: { friends: friend._id } },
         { new: true }
       );
 
