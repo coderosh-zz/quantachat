@@ -113,11 +113,12 @@ class UserResolver {
   @FieldResolver(() => [UserClass])
   async friends(@Root() parent: any): Promise<UserClass[]> {
     try {
-      const friends = await User.findById(parent.id)
-        .populate('friends')
-        .map((f) => f!.friends);
+      // const friends = await User.findById(parent.id)
+      //   .populate('friends')
+      //   .map((f) => f!.friends);
+      const friends = await User.find({ _id: { $in: parent.friends } });
       if (!friends) throw new ApolloError('Something went wrong');
-      return friends as any;
+      return friends;
     } catch (e) {
       throw new ApolloError(e);
     }
