@@ -37,8 +37,7 @@ class MessageResolver {
     @Arg('data') { to, text }: MessageInput,
     @Ctx() context: Context
   ): Promise<MessageClass> {
-    const loggedInUser = context.getUser()!;
-    const message = new Message({ from: loggedInUser._id, to, text });
+    const message = new Message({ from: context.currentUser._id, to, text });
     await message.save();
     return message;
   }
@@ -50,15 +49,12 @@ class MessageResolver {
     @Arg('text') text: string,
     @Ctx() context: Context
   ): Promise<MessageClass> {
-    const updatedMessage = await Message.findById(id);
+    const updatedMessage = await Message.findOneAndUpdate(
+      { _id: id, from: context.currentUser._id },
+      { text },
+      { new: true }
+    );
     if (!updatedMessage) throw new ApolloError('Message not found');
-
-    const user = context.getUser()!;
-    if (!user._id.equals(updatedMessage.from as any))
-      throw new ApolloError('You are not authorized to edit this message');
-
-    updatedMessage.text = text;
-    await updatedMessage.save();
 
     return updatedMessage;
   }
@@ -69,15 +65,12 @@ class MessageResolver {
     @Ctx() context: Context,
     @Arg('id') id: string
   ): Promise<boolean> {
-    const message = await Message.findById(id);
+    const message = await Message.findOneAndDelete({
+      _id: id,
+      from: context.currentUser._id,
+    });
     if (!message) throw new ApolloError('Message not found');
 
-    const user = context.getUser()!;
-
-    if (!user._id.equals(message.from as any))
-      throw new ApolloError('You are not authorized to edit this message');
-
-    await Message.findByIdAndDelete(id);
     return true;
   }
 
