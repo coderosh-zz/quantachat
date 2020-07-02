@@ -1,7 +1,7 @@
 import { Resolver, Query, Arg, Authorized, Mutation, Ctx } from 'type-graphql';
+import { isValidObjectId } from 'mongoose';
 import User, { UserClass } from '../../entities/User';
 import { Context } from '../../Context';
-import { isValidObjectId } from 'mongoose';
 
 @Resolver(() => UserClass)
 class UserResolver {

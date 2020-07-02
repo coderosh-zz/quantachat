@@ -8,7 +8,6 @@ import {
 import { ToastContainer } from 'react-toastify';
 
 import LoginPage from './pages/Login';
-import HomePage from './pages/Home';
 import { AuthContext } from './contexts/AuthContext';
 import ProfilePage from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
@@ -32,8 +31,7 @@ function App() {
       <ToastContainer />
       <Router>
         <Switch>
-          <Route path="/" exact={true} component={HomePage} />
-          <PublicRoute path="/login" component={LoginPage} />
+          <PublicRoute path="/" exact={true} component={LoginPage} />
           <PrivateRoute path="/profile" component={ProfilePage} />
         </Switch>
       </Router>

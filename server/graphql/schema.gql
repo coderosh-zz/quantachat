@@ -8,12 +8,23 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+"""Message Schema"""
+type Message {
+  createdAt: DateTime!
+  from: User!
+  id: ID!
+  text: String
+  to: User!
+  updatedAt: DateTime!
+}
+
 type Mutation {
   logout: Boolean!
 }
 
 type Query {
   me: User
+  messages: [Message!]!
   user(id: String!): User
   users: [User!]!
 }

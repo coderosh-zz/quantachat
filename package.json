@@ -14,12 +14,14 @@
     "build": "concurrently \"npm run build:server\" \"npm run build:client\"",
     "lint": "eslint . --fix --ext .ts",
     "codegen": "npm run codegen --prefix client",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "@typegoose/typegoose": "^7.2.0",
     "@types/react-router-dom": "^5.1.5",
     "apollo-server-express": "^2.15.0",
+    "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "connect-mongodb-session": "^2.3.3",
@@ -34,6 +36,7 @@
     "mongoose": "^5.9.20",
     "passport": "^0.4.1",
     "passport-auth0": "^1.3.3",
+    "querystring": "^0.2.0",
     "reflect-metadata": "^0.1.13",
     "slugify": "^1.4.4",
     "type-graphql": "^1.0.0-rc.2",
@@ -52,11 +55,21 @@
     "@typescript-eslint/eslint-plugin": "^3.4.0",
     "@typescript-eslint/parser": "^3.4.0",
     "concurrently": "^5.2.0",
-    "eslint": "^7.3.1",
+    "eslint": "6.6.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "ts-node-dev": "^1.0.0-pre.49",
     "typescript": "^3.9.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts}": "eslint --cache --fix"
   }
 }

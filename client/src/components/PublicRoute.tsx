@@ -5,6 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 interface PublicRouteProps {
   component: Function;
   path: string;
+  exact?: boolean;
 }
 
 const Loading = () => {
@@ -24,7 +25,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({
         isLoading ? (
           <Loading />
         ) : isAuth ? (
-          <Redirect to="/" />
+          <Redirect to="/login" />
         ) : (
           <Component {...props} />
         )
