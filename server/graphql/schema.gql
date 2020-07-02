@@ -18,12 +18,20 @@ type Message {
   updatedAt: DateTime!
 }
 
+input MessageInput {
+  text: String!
+  to: String!
+}
+
 type Mutation {
-  createNewMessage: Message!
+  createNewMessage(data: MessageInput!): Message!
+  deleteMessage(id: String!): Boolean!
   logout: Boolean!
+  updateMessage(id: String!, text: String!): Message!
 }
 
 type Query {
+  getMessage(to: String!): [Message!]!
   me: User
   messages: [Message!]!
   user(id: String!): User
