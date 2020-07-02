@@ -24,7 +24,7 @@ input MessageInput {
 }
 
 type Mutation {
-  addFriend(id: String!): Boolean!
+  addFriend(id: String!): User!
   createNewMessage(data: MessageInput!): Message!
   deleteMessage(id: String!): Message!
   logout: Boolean!

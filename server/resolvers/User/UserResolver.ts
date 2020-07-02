@@ -25,26 +25,32 @@ class UserResolver {
   }
 
   @Authorized()
-  @Mutation(() => Boolean)
+  @Mutation(() => UserClass)
   async addFriend(
     @Arg('id')
     id: string,
     @Ctx() context: Context
-  ): Promise<boolean> {
+  ): Promise<UserClass> {
     try {
-      const friend = await User.findById(id);
+      const friend = await User.findByIdAndUpdate(
+        id,
+        {
+          $addToSet: { friends: context.currentUser._id },
+        },
+        { new: true }
+      );
+
       if (!friend) throw new ApolloError('User not found');
-      const me = await User.findById(context.currentUser._id);
 
-      if (me!.friends!.includes(id as any)) {
-        return true;
-      }
+      await User.findByIdAndUpdate(
+        context.currentUser._id,
+        {
+          $addToSet: { friends: friend._id },
+        },
+        { new: true }
+      );
 
-      me!.friends!.push(friend.id);
-      friend.friends!.push(me!._id);
-
-      await me!.save();
-      return true;
+      return friend;
     } catch (e) {
       throw new ApolloError(e);
     }
