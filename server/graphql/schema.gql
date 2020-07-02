@@ -25,7 +25,7 @@ input MessageInput {
 
 type Mutation {
   createNewMessage(data: MessageInput!): Message!
-  deleteMessage(id: String!): Boolean!
+  deleteMessage(id: String!): Message!
   logout: Boolean!
   updateMessage(id: String!, text: String!): Message!
 }
@@ -36,6 +36,12 @@ type Query {
   messages: [Message!]!
   user(id: String!): User
   users: [User!]!
+}
+
+type Subscription {
+  onMessageDelete: Message!
+  onMessageUpdate: Message!
+  onNewMessage: Message!
 }
 
 """User Schema"""

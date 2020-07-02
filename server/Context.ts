@@ -24,7 +24,8 @@ export const pubsub = new PubSub();
 
 const contextFn = ({ req, res, connection }: ExpressContext): Context => {
   let context = connection && connection.context;
-  let currentUser = connection && connection.context.req.user;
+  let currentUser =
+    connection && connection.context && connection.context.req.user;
 
   if (!context) context = buildContext({ req, res });
   if (!currentUser) {

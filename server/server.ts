@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import 'colors';
+import http from 'http';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
@@ -57,8 +58,8 @@ app.use('/auth', authRouter);
       path: '/subscriptions',
       onConnect: createOnConnect([
         sessionMiddleware as any,
-        passportSessionMiddleware,
         passportMiddleware,
+        passportSessionMiddleware,
       ]) as any,
     },
     playground: {
@@ -69,11 +70,13 @@ app.use('/auth', authRouter);
   });
 
   server.applyMiddleware({ app });
+  const httpServer = http.createServer(app);
+  server.installSubscriptionHandlers(httpServer);
 
   await connectDatabase();
 
   const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(` Server is listening on port ${PORT} `.bgGreen.black);
   });
 })();
