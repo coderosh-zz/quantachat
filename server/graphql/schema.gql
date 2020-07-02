@@ -19,6 +19,7 @@ type Message {
 }
 
 type Mutation {
+  createNewMessage: Message!
   logout: Boolean!
 }
 
