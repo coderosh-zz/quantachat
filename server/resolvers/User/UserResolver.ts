@@ -1,4 +1,14 @@
-import { Resolver, Query, Arg, Authorized, Mutation, Ctx } from 'type-graphql';
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import {
+  Resolver,
+  Query,
+  Arg,
+  Authorized,
+  Mutation,
+  Ctx,
+  FieldResolver,
+  Root,
+} from 'type-graphql';
 import { isValidObjectId } from 'mongoose';
 import User, { UserClass } from '../../entities/User';
 import { Context } from '../../Context';
@@ -98,6 +108,19 @@ class UserResolver {
       res.clearCookie('sid');
       return resolve(true);
     });
+  }
+
+  @FieldResolver(() => [UserClass])
+  async friends(@Root() parent: any): Promise<UserClass[]> {
+    try {
+      const friends = await User.findById(parent.id)
+        .populate('friends')
+        .map((f) => f!.friends);
+      if (!friends) throw new ApolloError('Something went wrong');
+      return friends as any;
+    } catch (e) {
+      throw new ApolloError(e);
+    }
   }
 }
 
