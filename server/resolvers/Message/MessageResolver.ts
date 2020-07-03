@@ -29,9 +29,12 @@ class MessageResolver {
     @Ctx() context: Context
   ): Promise<MessageClass[]> {
     try {
-      const arr1 = await Message.find({ to, from: context.getUser()!._id });
-      const arr2 = await Message.find({ to: context.getUser()!._id, from: to });
-      return [...arr1, ...arr2];
+      return await Message.find({
+        $or: [
+          { to: to as any, from: context.getUser()!._id },
+          { from: to as any, to: context.getUser()!._id },
+        ],
+      });
     } catch (e) {
       throw new ApolloError(e);
     }
