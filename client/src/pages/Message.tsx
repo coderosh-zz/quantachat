@@ -42,7 +42,7 @@ const MessagePage: React.FC = () => {
           <MessageSidebar />
           <section className="flex flex-col flex-auto border-l border-gray-800">
             <ChatHeader />
-            <div className="chat-body p-4 flex-1 overflow-y-scroll">
+            <div className="chat-body p-4 overflow-y-scroll mt-auto">
               {msgArr.map((m) => {
                 return <MessageView messages={m} key={Math.random()} />;
               })}
