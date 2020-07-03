@@ -65,8 +65,8 @@ router.get('/success', (req, res) => {
   
       <script>
       const originUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : window.location.origin;
-      window.opener.postMessage('SUCCESS', originUrl);
       window.onload = window.close();
+      window.opener.postMessage('SUCCESS', originUrl);
       </script>
     </body>
   </html>

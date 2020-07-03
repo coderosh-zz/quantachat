@@ -56,6 +56,7 @@ const AuthContextProvider: React.FC = (props: any) => {
     },
     onError: () => {
       window.location.href = '/';
+      console.log('logout error');
     },
   });
 

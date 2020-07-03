@@ -19,11 +19,18 @@ export type Query = {
   users: Array<User>;
   user?: Maybe<User>;
   me?: Maybe<User>;
+  messages: Array<Message>;
+  getMessage: Array<Message>;
 };
 
 
 export type QueryUserArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryGetMessageArgs = {
+  to: Scalars['String'];
 };
 
 /** User Schema */
@@ -42,10 +49,105 @@ export type User = {
 };
 
 
+/** Message Schema */
+export type Message = {
+  __typename?: 'Message';
+  id: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  from: User;
+  to: User;
+  text?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  addFriend: User;
+  removeFriend: User;
   logout: Scalars['Boolean'];
+  createNewMessage: Message;
+  updateMessage: Message;
+  deleteMessage: Message;
 };
+
+
+export type MutationAddFriendArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationRemoveFriendArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationCreateNewMessageArgs = {
+  data: MessageInput;
+};
+
+
+export type MutationUpdateMessageArgs = {
+  text: Scalars['String'];
+  id: Scalars['String'];
+};
+
+
+export type MutationDeleteMessageArgs = {
+  id: Scalars['String'];
+};
+
+export type MessageInput = {
+  text: Scalars['String'];
+  to: Scalars['String'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  onNewMessage: Message;
+  onMessageUpdate: Message;
+  onMessageDelete: Message;
+};
+
+export type GetMessagesQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetMessagesQuery = (
+  { __typename?: 'Query' }
+  & { getMessage: Array<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'text'>
+    & { to: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ), from: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  )> }
+);
+
+export type CreateNewMessageMutationVariables = Exact<{
+  to: Scalars['String'];
+  text: Scalars['String'];
+}>;
+
+
+export type CreateNewMessageMutation = (
+  { __typename?: 'Mutation' }
+  & { createNewMessage: (
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'text'>
+    & { to: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ), from: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  ) }
+);
 
 export type GetUserByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -84,6 +186,86 @@ export type CurrentUserQuery = (
 );
 
 
+export const GetMessagesDocument = gql`
+    query getMessages($id: String!) {
+  getMessage(to: $id) {
+    id
+    text
+    to {
+      id
+    }
+    from {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMessagesQuery__
+ *
+ * To run a query within a React component, call `useGetMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMessagesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMessagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, baseOptions);
+      }
+export function useGetMessagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, baseOptions);
+        }
+export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
+export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
+export type GetMessagesQueryResult = ApolloReactCommon.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
+export const CreateNewMessageDocument = gql`
+    mutation createNewMessage($to: String!, $text: String!) {
+  createNewMessage(data: {text: $text, to: $to}) {
+    id
+    text
+    to {
+      id
+    }
+    from {
+      id
+    }
+  }
+}
+    `;
+export type CreateNewMessageMutationFn = ApolloReactCommon.MutationFunction<CreateNewMessageMutation, CreateNewMessageMutationVariables>;
+
+/**
+ * __useCreateNewMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateNewMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNewMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNewMessageMutation, { data, loading, error }] = useCreateNewMessageMutation({
+ *   variables: {
+ *      to: // value for 'to'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useCreateNewMessageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateNewMessageMutation, CreateNewMessageMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateNewMessageMutation, CreateNewMessageMutationVariables>(CreateNewMessageDocument, baseOptions);
+      }
+export type CreateNewMessageMutationHookResult = ReturnType<typeof useCreateNewMessageMutation>;
+export type CreateNewMessageMutationResult = ApolloReactCommon.MutationResult<CreateNewMessageMutation>;
+export type CreateNewMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateNewMessageMutation, CreateNewMessageMutationVariables>;
 export const GetUserByIdDocument = gql`
     query getUserById($id: String!) {
   user(id: $id) {

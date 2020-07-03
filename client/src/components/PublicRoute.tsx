@@ -25,7 +25,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({
         isLoading ? (
           <Loading />
         ) : isAuth ? (
-          <Redirect to="/login" />
+          <Redirect to="/profile" />
         ) : (
           <Component {...props} />
         )
