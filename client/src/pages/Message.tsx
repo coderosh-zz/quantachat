@@ -10,7 +10,6 @@ import ChatFooter from '../components/ChatFooter';
 import MessageView from '../components/MessageView';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
-import client from '../graphql/client';
 
 export const scrollToBottom = (bodyRef: React.RefObject<HTMLDivElement>) => {
   if (!bodyRef.current) return;
@@ -27,10 +26,7 @@ const MessagePage: React.FC = () => {
     error: ConvoError,
     loading: ConvoLoading,
     refetch,
-  } = useGetAllConversationsQuery({
-    notifyOnNetworkStatusChange: true,
-    fetchPolicy: 'no-cache',
-  });
+  } = useGetAllConversationsQuery({});
 
   useEffect(() => {
     subscribeToMore({
@@ -65,6 +61,10 @@ const MessagePage: React.FC = () => {
       scrollToBottom(bodyRef);
     },
   });
+
+  if (ConvoLoading) return <div>Loading</div>;
+
+  console.log(ConvoData);
 
   if (loading) return <div>Loading</div>;
   if (error || !data) return <div>Error</div>;
