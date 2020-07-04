@@ -80,7 +80,7 @@ const MessagePage: React.FC = () => {
     <div className="h-screen w-full flex antialiased text-gray-200 bg-gray-900 overflow-hidden">
       <div className="flex-1 flex flex-col">
         <main className="flex-grow flex flex-row min-h-0">
-          <MessageSidebar />
+          <MessageSidebar params={params} />
           <section className="flex flex-col flex-auto border-l border-gray-800">
             <ChatHeader />
             <div

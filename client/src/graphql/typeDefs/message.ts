@@ -21,10 +21,12 @@ export default gql`
       from {
         id
         name
+        profileUrl
       }
       to {
         id
         name
+        profileUrl
       }
     }
   }

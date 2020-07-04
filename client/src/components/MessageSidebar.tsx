@@ -10,26 +10,13 @@ interface UserComponentProps {
   new?: boolean;
   seen?: boolean;
   data: {
+    id: string;
     name: string;
     photo: string;
     lastmsg: string;
     time: string;
   };
 }
-
-const userDatas: UserComponentProps[] = [
-  {
-    active: true,
-    new: false,
-    seen: false,
-    data: {
-      name: 'Roshan Acharya',
-      photo: 'https://randomuser.me/api/portraits/men/33.jpg',
-      lastmsg: 'Oho',
-      time: '1m',
-    },
-  },
-];
 
 const UserComponent: React.FC<UserComponentProps> = (props) => {
   return (
@@ -77,13 +64,32 @@ const UserComponent: React.FC<UserComponentProps> = (props) => {
   );
 };
 
-const MessageSidebar: React.FC = () => {
+interface MessageSidebarProps {
+  params: any;
+}
+
+const MessageSidebar: React.FC<MessageSidebarProps> = (props) => {
   const { me } = useContext(AuthContext);
 
   const { data, error, loading } = useGetAllConversationsQuery();
 
-  console.log(data);
+  if (loading || !data) return <div>Loading</div>;
 
+  const reqData: UserComponentProps[] = data.conversations.map((convo) => {
+    const u = convo.from.id === me!.id ? convo.to : convo.from;
+    return {
+      active: u.id === props.params.username,
+      new: false,
+      seen: false,
+      data: {
+        id: u.id,
+        name: u.name,
+        lastmsg: convo.text || '',
+        photo: u.profileUrl,
+        time: '',
+      },
+    };
+  });
   return (
     <section className="flex flex-col flex-none overflow-auto w-24 hover:w-64 group lg:max-w-sm md:w-2/5 transition-all duration-300 ease-in-out">
       <div className="header p-4 flex flex-row justify-between items-center flex-none">
@@ -129,8 +135,8 @@ const MessageSidebar: React.FC = () => {
       </div>
 
       <div className="contacts p-2 flex-1 overflow-y-scroll">
-        {userDatas.map((user, index) => (
-          <UserComponent key={index} {...user} />
+        {reqData.map((user) => (
+          <UserComponent key={user.data.id} {...user} />
         ))}
       </div>
     </section>

@@ -138,10 +138,10 @@ export type GetAllConversationsQuery = (
     & Pick<Message, 'id' | 'text'>
     & { from: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'name'>
+      & Pick<User, 'id' | 'name' | 'profileUrl'>
     ), to: (
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'name'>
+      & Pick<User, 'id' | 'name' | 'profileUrl'>
     ) }
   )> }
 );
@@ -270,10 +270,12 @@ export const GetAllConversationsDocument = gql`
     from {
       id
       name
+      profileUrl
     }
     to {
       id
       name
+      profileUrl
     }
   }
 }
