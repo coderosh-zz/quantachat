@@ -7,9 +7,11 @@ export default gql`
       text
       to {
         id
+        profileUrl
       }
       from {
         id
+        profileUrl
       }
     }
   }
@@ -37,9 +39,11 @@ export default gql`
       text
       to {
         id
+        profileUrl
       }
       from {
         id
+        profileUrl
       }
     }
   }
@@ -50,9 +54,11 @@ export default gql`
       text
       to {
         id
+        profileUrl
       }
       from {
         id
+        profileUrl
       }
     }
   }

@@ -24,6 +24,7 @@ interface Message {
   text: string;
   from: string;
   to: string;
+  profileUrl: string;
 }
 
 interface MessageViewProps {
@@ -44,7 +45,7 @@ const MessageView: React.FC<MessageViewProps> = (props) => {
           <div className="w-8 h-8 relative flex flex-shrink-0 mr-4">
             <img
               className="shadow-md rounded-full w-full h-full object-cover"
-              src="https://randomuser.me/api/portraits/men/33.jpg"
+              src={props.messages[0].profileUrl}
               alt=""
             />
           </div>

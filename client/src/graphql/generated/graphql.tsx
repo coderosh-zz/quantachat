@@ -120,10 +120,10 @@ export type GetMessagesQuery = (
     & Pick<Message, 'id' | 'text'>
     & { to: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'profileUrl'>
     ), from: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'profileUrl'>
     ) }
   )> }
 );
@@ -159,10 +159,10 @@ export type CreateNewMessageMutation = (
     & Pick<Message, 'id' | 'text'>
     & { to: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'profileUrl'>
     ), from: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'profileUrl'>
     ) }
   ) }
 );
@@ -177,10 +177,10 @@ export type OnNewMessageSubscription = (
     & Pick<Message, 'id' | 'text'>
     & { to: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'profileUrl'>
     ), from: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'profileUrl'>
     ) }
   ) }
 );
@@ -229,9 +229,11 @@ export const GetMessagesDocument = gql`
     text
     to {
       id
+      profileUrl
     }
     from {
       id
+      profileUrl
     }
   }
 }
@@ -312,9 +314,11 @@ export const CreateNewMessageDocument = gql`
     text
     to {
       id
+      profileUrl
     }
     from {
       id
+      profileUrl
     }
   }
 }
@@ -352,9 +356,11 @@ export const OnNewMessageDocument = gql`
     text
     to {
       id
+      profileUrl
     }
     from {
       id
+      profileUrl
     }
   }
 }

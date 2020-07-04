@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import {
-  useGetMessagesQuery,
-  useGetAllConversationsQuery,
-} from '../graphql/generated/graphql';
+import { useGetAllConversationsQuery } from '../graphql/generated/graphql';
+import { Link } from 'react-router-dom';
 
 interface UserComponentProps {
   active?: boolean;
@@ -20,65 +18,73 @@ interface UserComponentProps {
 
 const UserComponent: React.FC<UserComponentProps> = (props) => {
   return (
-    <div
-      className={`flex justify-between items-center p-3 ${
-        props.active ? 'bg-gray-800' : 'hover:bg-gray-800'
-      } rounded-lg relative`}
-    >
-      <div className="w-16 h-16 relative flex flex-shrink-0">
-        <img
-          className="shadow-md rounded-full w-full h-full object-cover"
-          src={props.data.photo}
-          alt=""
-        />
-        <div className="absolute bg-gray-900 p-1 rounded-full bottom-0 right-0">
-          <div className="bg-green-500 rounded-full w-3 h-3"></div>
-        </div>
-      </div>
-      <div className="flex-auto min-w-0 ml-4 mr-6 hidden md:block group-hover:block">
-        <p className={props.new ? 'font-bold' : ''}>{props.data.name}</p>
-        <div
-          className={`flex items-center text-sm ${
-            props.new ? 'font-bold' : 'text-gray-600 '
-          }`}
-        >
-          <div className="min-w-0">
-            <p className="truncate">{props.data.lastmsg}</p>
-          </div>
-          <p className="ml-2 whitespace-no-wrap">{props.data.time}</p>
-        </div>
-      </div>
-      {props.new && (
-        <div className="bg-blue-700 w-3 h-3 rounded-full flex flex-shrink-0 hidden md:block group-hover:block"></div>
-      )}
-      {props.seen && (
-        <div className="w-4 h-4 flex flex-shrink-0 hidden md:block group-hover:block">
+    <Link to={'/message/' + props.data.id}>
+      <div
+        className={`flex justify-between items-center p-3  mb-1 ${
+          props.active ? 'bg-gray-800' : 'hover:bg-gray-800'
+        } rounded-lg relative`}
+      >
+        <div className="w-16 h-16 relative flex flex-shrink-0">
           <img
-            className="rounded-full w-full h-full object-cover"
-            alt="user2"
+            className="shadow-md rounded-full w-full h-full object-cover"
             src={props.data.photo}
+            alt={props.data.name}
           />
+          {/* <div className="absolute bg-gray-900 p-1 rounded-full bottom-0 right-0">
+            <div className="bg-green-500 rounded-full w-3 h-3"></div>
+          </div> */}
         </div>
-      )}
-    </div>
+        <div className="flex-auto min-w-0 ml-4 mr-6 hidden md:block group-hover:block">
+          <p className={props.new ? 'font-bold' : ''}>{props.data.name}</p>
+          <div
+            className={`flex items-center text-sm ${
+              props.new ? 'font-bold' : 'text-gray-600 '
+            }`}
+          >
+            <div className="min-w-0">
+              <p className="truncate">{props.data.lastmsg}</p>
+            </div>
+            <p className="ml-2 whitespace-no-wrap">{props.data.time}</p>
+          </div>
+        </div>
+        {props.new && (
+          <div className="bg-blue-700 w-3 h-3 rounded-full flex flex-shrink-0 hidden md:block group-hover:block"></div>
+        )}
+        {props.seen && (
+          <div className="w-4 h-4 flex flex-shrink-0 hidden md:block group-hover:block">
+            <img
+              className="rounded-full w-full h-full object-cover"
+              alt="seenByUser"
+              src={props.data.photo}
+            />
+          </div>
+        )}
+      </div>
+    </Link>
   );
 };
 
 interface MessageSidebarProps {
   params: any;
+  data: any;
+  error: any;
+  loading: any;
 }
 
-const MessageSidebar: React.FC<MessageSidebarProps> = (props) => {
+const MessageSidebar: React.FC<MessageSidebarProps> = ({
+  data,
+  loading,
+  error,
+  params,
+}) => {
   const { me } = useContext(AuthContext);
 
-  const { data, error, loading } = useGetAllConversationsQuery();
+  if (!data) return <div></div>;
 
-  if (loading || !data) return <div>Loading</div>;
-
-  const reqData: UserComponentProps[] = data.conversations.map((convo) => {
+  const reqData: UserComponentProps[] = data.conversations.map((convo: any) => {
     const u = convo.from.id === me!.id ? convo.to : convo.from;
     return {
-      active: u.id === props.params.username,
+      active: u.id === params.username,
       new: false,
       seen: false,
       data: {

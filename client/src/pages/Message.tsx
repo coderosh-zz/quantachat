@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useRef } from 'react';
 import {
   useGetMessagesQuery,
   OnNewMessageDocument,
-  GetMessagesQuery,
+  useGetAllConversationsQuery,
 } from '../graphql/generated/graphql';
 import MessageSidebar from '../components/MessageSidebar';
 import ChatHeader from '../components/ChatHeader';
@@ -10,6 +10,7 @@ import ChatFooter from '../components/ChatFooter';
 import MessageView from '../components/MessageView';
 import { useParams } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import client from '../graphql/client';
 
 export const scrollToBottom = (bodyRef: React.RefObject<HTMLDivElement>) => {
   if (!bodyRef.current) return;
@@ -21,10 +22,19 @@ const MessagePage: React.FC = () => {
   const { me } = useContext(AuthContext);
   const bodyRef = useRef<HTMLDivElement>(null);
 
+  const {
+    data: ConvoData,
+    error: ConvoError,
+    loading: ConvoLoading,
+    refetch,
+  } = useGetAllConversationsQuery({ notifyOnNetworkStatusChange: true });
+
   useEffect(() => {
     subscribeToMore({
       document: OnNewMessageDocument,
       updateQuery(prev, data: any) {
+        refetch();
+
         if (
           !prev.getMessage ||
           data.subscriptionData.data.onNewMessage.from.id === me?.id
@@ -57,10 +67,11 @@ const MessagePage: React.FC = () => {
 
   if (loading) return <div>Loading</div>;
   if (error || !data) return <div>Error</div>;
-  const msg = data.getMessage.map((m) => ({
+  const msg = data.getMessage.map((m: any) => ({
     text: m.text!,
     from: m.from.id as string,
     to: m.to.id as string,
+    profileUrl: m.from.id === me!.id ? m.to.profileUrl : m.from.profileUrl,
   }));
 
   let msgArr = [];
@@ -80,7 +91,12 @@ const MessagePage: React.FC = () => {
     <div className="h-screen w-full flex antialiased text-gray-200 bg-gray-900 overflow-hidden">
       <div className="flex-1 flex flex-col">
         <main className="flex-grow flex flex-row min-h-0">
-          <MessageSidebar params={params} />
+          <MessageSidebar
+            params={params}
+            data={ConvoData}
+            error={ConvoError}
+            loading={ConvoLoading}
+          />
           <section className="flex flex-col flex-auto border-l border-gray-800">
             <ChatHeader />
             <div
