@@ -1,4 +1,7 @@
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
+html {
+  scroll-behavior: smooth;
+}
 
 .Toastify__toast--success {
   background-color: #222121;

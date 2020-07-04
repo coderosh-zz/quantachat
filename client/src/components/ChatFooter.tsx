@@ -4,9 +4,11 @@ import {
   GetMessagesQuery,
   GetMessagesDocument,
 } from '../graphql/generated/graphql';
+import { scrollToBottom } from '../pages/Message';
 
 interface ChatFooterProps {
   params: any;
+  bodyRef: React.RefObject<HTMLDivElement>;
 }
 
 const ChatFooter: React.FC<ChatFooterProps> = (props) => {
@@ -34,6 +36,10 @@ const ChatFooter: React.FC<ChatFooterProps> = (props) => {
           },
           variables: { id: data.createNewMessage.to.id },
         });
+
+        setTimeout(() => {
+          scrollToBottom(props.bodyRef);
+        }, 0);
       } catch (e) {
         console.log(e);
       }

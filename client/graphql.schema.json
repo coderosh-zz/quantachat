@@ -80,7 +80,7 @@
             "deprecationReason": null
           },
           {
-            "name": "messages",
+            "name": "conversations",
             "description": null,
             "args": [],
             "type": {

@@ -33,9 +33,9 @@ type Mutation {
 }
 
 type Query {
+  conversations: [Message!]!
   getMessage(to: String!): [Message!]!
   me: User
-  messages: [Message!]!
   user(id: String!): User
   users: [User!]!
 }

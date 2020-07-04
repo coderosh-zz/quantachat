@@ -19,7 +19,7 @@ export type Query = {
   users: Array<User>;
   user?: Maybe<User>;
   me?: Maybe<User>;
-  messages: Array<Message>;
+  conversations: Array<Message>;
   getMessage: Array<Message>;
 };
 
@@ -128,6 +128,24 @@ export type GetMessagesQuery = (
   )> }
 );
 
+export type GetAllConvoQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllConvoQuery = (
+  { __typename?: 'Query' }
+  & { conversations: Array<(
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'text'>
+    & { from: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ), to: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  )> }
+);
+
 export type CreateNewMessageMutationVariables = Exact<{
   to: Scalars['String'];
   text: Scalars['String'];
@@ -137,6 +155,24 @@ export type CreateNewMessageMutationVariables = Exact<{
 export type CreateNewMessageMutation = (
   { __typename?: 'Mutation' }
   & { createNewMessage: (
+    { __typename?: 'Message' }
+    & Pick<Message, 'id' | 'text'>
+    & { to: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ), from: (
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    ) }
+  ) }
+);
+
+export type OnNewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OnNewMessageSubscription = (
+  { __typename?: 'Subscription' }
+  & { onNewMessage: (
     { __typename?: 'Message' }
     & Pick<Message, 'id' | 'text'>
     & { to: (
@@ -226,6 +262,45 @@ export function useGetMessagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
 export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
 export type GetMessagesQueryResult = ApolloReactCommon.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
+export const GetAllConvoDocument = gql`
+    query getAllConvo {
+  conversations {
+    id
+    text
+    from {
+      id
+    }
+    to {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllConvoQuery__
+ *
+ * To run a query within a React component, call `useGetAllConvoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllConvoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllConvoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllConvoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllConvoQuery, GetAllConvoQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllConvoQuery, GetAllConvoQueryVariables>(GetAllConvoDocument, baseOptions);
+      }
+export function useGetAllConvoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllConvoQuery, GetAllConvoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllConvoQuery, GetAllConvoQueryVariables>(GetAllConvoDocument, baseOptions);
+        }
+export type GetAllConvoQueryHookResult = ReturnType<typeof useGetAllConvoQuery>;
+export type GetAllConvoLazyQueryHookResult = ReturnType<typeof useGetAllConvoLazyQuery>;
+export type GetAllConvoQueryResult = ApolloReactCommon.QueryResult<GetAllConvoQuery, GetAllConvoQueryVariables>;
 export const CreateNewMessageDocument = gql`
     mutation createNewMessage($to: String!, $text: String!) {
   createNewMessage(data: {text: $text, to: $to}) {
@@ -266,6 +341,41 @@ export function useCreateNewMessageMutation(baseOptions?: ApolloReactHooks.Mutat
 export type CreateNewMessageMutationHookResult = ReturnType<typeof useCreateNewMessageMutation>;
 export type CreateNewMessageMutationResult = ApolloReactCommon.MutationResult<CreateNewMessageMutation>;
 export type CreateNewMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateNewMessageMutation, CreateNewMessageMutationVariables>;
+export const OnNewMessageDocument = gql`
+    subscription onNewMessage {
+  onNewMessage {
+    id
+    text
+    to {
+      id
+    }
+    from {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useOnNewMessageSubscription__
+ *
+ * To run a query within a React component, call `useOnNewMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnNewMessageSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnNewMessageSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<OnNewMessageSubscription, OnNewMessageSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<OnNewMessageSubscription, OnNewMessageSubscriptionVariables>(OnNewMessageDocument, baseOptions);
+      }
+export type OnNewMessageSubscriptionHookResult = ReturnType<typeof useOnNewMessageSubscription>;
+export type OnNewMessageSubscriptionResult = ApolloReactCommon.SubscriptionResult<OnNewMessageSubscription>;
 export const GetUserByIdDocument = gql`
     query getUserById($id: String!) {
   user(id: $id) {

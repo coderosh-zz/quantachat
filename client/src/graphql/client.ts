@@ -12,7 +12,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: `/subscriptions`,
+  uri: `ws://localhost:4000/subscriptions`,
   options: {
     lazy: true,
     reconnect: true,

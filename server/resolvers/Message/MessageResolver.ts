@@ -17,9 +17,57 @@ import { Context } from '../../Context';
 
 @Resolver(() => MessageClass)
 class MessageResolver {
+  @Authorized()
   @Query(() => [MessageClass])
-  async messages(): Promise<MessageClass[]> {
-    return await Message.find({});
+  async conversations(@Ctx() context: Context): Promise<any[]> {
+    const user = context.getUser()!._id;
+    const messages = await Message.aggregate([
+      {
+        $match: {
+          $or: [{ to: user }, { from: user }],
+        },
+      },
+      {
+        $project: {
+          from: {
+            $cond: { if: { $eq: ['$to', user] }, then: '$from', else: '$to' },
+          },
+          to: {
+            $cond: { if: { $eq: ['$to', user] }, then: '$to', else: '$from' },
+          },
+          text: '$text',
+          _id: '$_id',
+          createdAt: '$createdAt',
+          updatedAt: '$updatedAt',
+        },
+      },
+      { $sort: { _id: -1 } },
+      {
+        $group: {
+          id: { $first: '$_id' },
+          _id: { from: '$from' },
+          from: { $first: '$from' },
+          to: { $first: '$to' },
+          text: { $first: '$text' },
+          createdAt: { $first: '$createdAt' },
+          updatedAt: { $first: '$updatedAt' },
+        },
+      },
+      {
+        $project: {
+          _id: '$id',
+          from: 1,
+          to: 1,
+          text: 1,
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+    ]);
+    return messages;
   }
 
   @Authorized()

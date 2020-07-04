@@ -6,6 +6,7 @@ const conOptions: ConnectionOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: true,
 };
 
 export const connectDatabase = async (): Promise<void> => {

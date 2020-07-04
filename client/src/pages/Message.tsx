@@ -1,16 +1,57 @@
-import React from 'react';
-import { useGetMessagesQuery } from '../graphql/generated/graphql';
+import React, { useEffect, useContext, useRef } from 'react';
+import {
+  useGetMessagesQuery,
+  OnNewMessageDocument,
+  GetMessagesQuery,
+} from '../graphql/generated/graphql';
 import MessageSidebar from '../components/MessageSidebar';
 import ChatHeader from '../components/ChatHeader';
 import ChatFooter from '../components/ChatFooter';
 import MessageView from '../components/MessageView';
 import { useParams } from 'react-router-dom';
+import { AuthContext } from '../contexts/AuthContext';
+
+export const scrollToBottom = (bodyRef: React.RefObject<HTMLDivElement>) => {
+  if (!bodyRef.current) return;
+  bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+};
 
 const MessagePage: React.FC = () => {
   const params = useParams() as any;
-  const { data, error, loading } = useGetMessagesQuery({
+  const { me } = useContext(AuthContext);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    subscribeToMore({
+      document: OnNewMessageDocument,
+      updateQuery(prev, data: any) {
+        if (
+          !prev.getMessage ||
+          data.subscriptionData.data.onNewMessage.from.id === me?.id
+        )
+          return prev;
+
+        const newData = {
+          getMessage: [...prev.getMessage],
+        };
+
+        newData.getMessage.push(data.subscriptionData.data.onNewMessage);
+
+        setTimeout(() => {
+          scrollToBottom(bodyRef);
+        }, 0);
+
+        return newData;
+      },
+    });
+  }, []);
+
+  const { data, error, loading, subscribeToMore } = useGetMessagesQuery({
     variables: {
       id: params.username,
+    },
+    onCompleted() {
+      scrollToBottom(bodyRef);
     },
   });
 
@@ -42,12 +83,15 @@ const MessagePage: React.FC = () => {
           <MessageSidebar />
           <section className="flex flex-col flex-auto border-l border-gray-800">
             <ChatHeader />
-            <div className="chat-body p-4 overflow-y-scroll mt-auto">
-              {msgArr.map((m) => {
-                return <MessageView messages={m} key={Math.random()} />;
-              })}
+            <div
+              ref={bodyRef}
+              className="chat-body p-4 overflow-y-scroll mt-auto"
+            >
+              {msgArr.map((m) => (
+                <MessageView messages={m} key={Math.random()} />
+              ))}
             </div>
-            <ChatFooter params={params} />
+            <ChatFooter params={params} bodyRef={bodyRef} />
           </section>
         </main>
       </div>
