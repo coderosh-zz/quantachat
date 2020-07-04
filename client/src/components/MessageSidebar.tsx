@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import { useGetMessagesQuery } from '../graphql/generated/graphql';
+import {
+  useGetMessagesQuery,
+  useGetAllConversationsQuery,
+} from '../graphql/generated/graphql';
 
 interface UserComponentProps {
   active?: boolean;
@@ -76,6 +79,10 @@ const UserComponent: React.FC<UserComponentProps> = (props) => {
 
 const MessageSidebar: React.FC = () => {
   const { me } = useContext(AuthContext);
+
+  const { data, error, loading } = useGetAllConversationsQuery();
+
+  console.log(data);
 
   return (
     <section className="flex flex-col flex-none overflow-auto w-24 hover:w-64 group lg:max-w-sm md:w-2/5 transition-all duration-300 ease-in-out">

@@ -14,15 +14,17 @@ export default gql`
     }
   }
 
-  query getAllConvo {
+  query getAllConversations {
     conversations {
       id
       text
       from {
         id
+        name
       }
       to {
         id
+        name
       }
     }
   }

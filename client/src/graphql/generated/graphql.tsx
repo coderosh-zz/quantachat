@@ -128,20 +128,20 @@ export type GetMessagesQuery = (
   )> }
 );
 
-export type GetAllConvoQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllConversationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllConvoQuery = (
+export type GetAllConversationsQuery = (
   { __typename?: 'Query' }
   & { conversations: Array<(
     { __typename?: 'Message' }
     & Pick<Message, 'id' | 'text'>
     & { from: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'name'>
     ), to: (
       { __typename?: 'User' }
-      & Pick<User, 'id'>
+      & Pick<User, 'id' | 'name'>
     ) }
   )> }
 );
@@ -262,45 +262,47 @@ export function useGetMessagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
 export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
 export type GetMessagesQueryResult = ApolloReactCommon.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
-export const GetAllConvoDocument = gql`
-    query getAllConvo {
+export const GetAllConversationsDocument = gql`
+    query getAllConversations {
   conversations {
     id
     text
     from {
       id
+      name
     }
     to {
       id
+      name
     }
   }
 }
     `;
 
 /**
- * __useGetAllConvoQuery__
+ * __useGetAllConversationsQuery__
  *
- * To run a query within a React component, call `useGetAllConvoQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllConvoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAllConversationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllConversationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAllConvoQuery({
+ * const { data, loading, error } = useGetAllConversationsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetAllConvoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllConvoQuery, GetAllConvoQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetAllConvoQuery, GetAllConvoQueryVariables>(GetAllConvoDocument, baseOptions);
+export function useGetAllConversationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllConversationsQuery, GetAllConversationsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllConversationsQuery, GetAllConversationsQueryVariables>(GetAllConversationsDocument, baseOptions);
       }
-export function useGetAllConvoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllConvoQuery, GetAllConvoQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetAllConvoQuery, GetAllConvoQueryVariables>(GetAllConvoDocument, baseOptions);
+export function useGetAllConversationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllConversationsQuery, GetAllConversationsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllConversationsQuery, GetAllConversationsQueryVariables>(GetAllConversationsDocument, baseOptions);
         }
-export type GetAllConvoQueryHookResult = ReturnType<typeof useGetAllConvoQuery>;
-export type GetAllConvoLazyQueryHookResult = ReturnType<typeof useGetAllConvoLazyQuery>;
-export type GetAllConvoQueryResult = ApolloReactCommon.QueryResult<GetAllConvoQuery, GetAllConvoQueryVariables>;
+export type GetAllConversationsQueryHookResult = ReturnType<typeof useGetAllConversationsQuery>;
+export type GetAllConversationsLazyQueryHookResult = ReturnType<typeof useGetAllConversationsLazyQuery>;
+export type GetAllConversationsQueryResult = ApolloReactCommon.QueryResult<GetAllConversationsQuery, GetAllConversationsQueryVariables>;
 export const CreateNewMessageDocument = gql`
     mutation createNewMessage($to: String!, $text: String!) {
   createNewMessage(data: {text: $text, to: $to}) {
