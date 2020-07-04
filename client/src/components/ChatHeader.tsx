@@ -1,19 +1,28 @@
 import React from 'react';
+import { useGetUserByIdQuery } from '../graphql/generated/graphql';
 
-const ChatHeader: React.FC = () => {
+const ChatHeader: React.FC<{ params: any }> = ({ params }) => {
+  const { data, error } = useGetUserByIdQuery({
+    variables: {
+      id: params.username,
+    },
+  });
+
+  if (error) return <div>Something went wrong</div>;
+
   return (
     <div className="chat-header px-6 py-4 flex flex-row flex-none justify-between items-center shadow">
       <div className="flex">
         <div className="w-12 h-12 mr-4 relative flex flex-shrink-0">
           <img
             className="shadow-md rounded-full w-full h-full object-cover"
-            src="https://randomuser.me/api/portraits/men/33.jpg"
-            alt=""
+            src={data?.user?.profileUrl}
+            alt={data?.user?.name}
           />
         </div>
         <div className="text-sm">
-          <p className="font-bold">Roshan Acharya</p>
-          <p>Active 1h ago</p>
+          <p className="font-bold">{data?.user?.name}</p>
+          {/* <p>Active 1h ago</p> */}
         </div>
       </div>
 

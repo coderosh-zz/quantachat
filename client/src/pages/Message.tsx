@@ -27,7 +27,10 @@ const MessagePage: React.FC = () => {
     error: ConvoError,
     loading: ConvoLoading,
     refetch,
-  } = useGetAllConversationsQuery({ notifyOnNetworkStatusChange: true });
+  } = useGetAllConversationsQuery({
+    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'no-cache',
+  });
 
   useEffect(() => {
     subscribeToMore({
@@ -41,9 +44,7 @@ const MessagePage: React.FC = () => {
         )
           return prev;
 
-        const newData = {
-          getMessage: [...prev.getMessage],
-        };
+        const newData = { getMessage: [...prev.getMessage] };
 
         newData.getMessage.push(data.subscriptionData.data.onNewMessage);
 
@@ -98,7 +99,7 @@ const MessagePage: React.FC = () => {
             loading={ConvoLoading}
           />
           <section className="flex flex-col flex-auto border-l border-gray-800">
-            <ChatHeader />
+            <ChatHeader params={params} />
             <div
               ref={bodyRef}
               className="chat-body p-4 overflow-y-scroll mt-auto"

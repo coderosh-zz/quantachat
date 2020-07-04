@@ -23,11 +23,9 @@ export type Query = {
   getMessage: Array<Message>;
 };
 
-
 export type QueryUserArgs = {
   id: Scalars['String'];
 };
-
 
 export type QueryGetMessageArgs = {
   to: Scalars['String'];
@@ -47,7 +45,6 @@ export type User = {
   socialId: Scalars['String'];
   profileUrl: Scalars['String'];
 };
-
 
 /** Message Schema */
 export type Message = {
@@ -70,27 +67,22 @@ export type Mutation = {
   deleteMessage: Message;
 };
 
-
 export type MutationAddFriendArgs = {
   id: Scalars['String'];
 };
-
 
 export type MutationRemoveFriendArgs = {
   id: Scalars['String'];
 };
 
-
 export type MutationCreateNewMessageArgs = {
   data: MessageInput;
 };
-
 
 export type MutationUpdateMessageArgs = {
   text: Scalars['String'];
   id: Scalars['String'];
 };
-
 
 export type MutationDeleteMessageArgs = {
   id: Scalars['String'];
@@ -112,132 +104,106 @@ export type GetMessagesQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
+export type GetMessagesQuery = { __typename?: 'Query' } & {
+  getMessage: Array<
+    { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
+        to: { __typename?: 'User' } & Pick<User, 'id' | 'profileUrl'>;
+        from: { __typename?: 'User' } & Pick<User, 'id' | 'profileUrl'>;
+      }
+  >;
+};
 
-export type GetMessagesQuery = (
-  { __typename?: 'Query' }
-  & { getMessage: Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'text'>
-    & { to: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'profileUrl'>
-    ), from: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'profileUrl'>
-    ) }
-  )> }
-);
+export type GetAllConversationsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAllConversationsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllConversationsQuery = (
-  { __typename?: 'Query' }
-  & { conversations: Array<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'text'>
-    & { from: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'name' | 'profileUrl'>
-    ), to: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'name' | 'profileUrl'>
-    ) }
-  )> }
-);
+export type GetAllConversationsQuery = { __typename?: 'Query' } & {
+  conversations: Array<
+    { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
+        from: { __typename?: 'User' } & Pick<
+          User,
+          'id' | 'name' | 'profileUrl'
+        >;
+        to: { __typename?: 'User' } & Pick<User, 'id' | 'name' | 'profileUrl'>;
+      }
+  >;
+};
 
 export type CreateNewMessageMutationVariables = Exact<{
   to: Scalars['String'];
   text: Scalars['String'];
 }>;
 
+export type CreateNewMessageMutation = { __typename?: 'Mutation' } & {
+  createNewMessage: { __typename?: 'Message' } & Pick<
+    Message,
+    'id' | 'text'
+  > & {
+      to: { __typename?: 'User' } & Pick<User, 'id' | 'profileUrl'>;
+      from: { __typename?: 'User' } & Pick<User, 'id' | 'profileUrl'>;
+    };
+};
 
-export type CreateNewMessageMutation = (
-  { __typename?: 'Mutation' }
-  & { createNewMessage: (
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'text'>
-    & { to: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'profileUrl'>
-    ), from: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'profileUrl'>
-    ) }
-  ) }
-);
+export type OnNewMessageSubscriptionVariables = Exact<{ [key: string]: never }>;
 
-export type OnNewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnNewMessageSubscription = (
-  { __typename?: 'Subscription' }
-  & { onNewMessage: (
-    { __typename?: 'Message' }
-    & Pick<Message, 'id' | 'text'>
-    & { to: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'profileUrl'>
-    ), from: (
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'profileUrl'>
-    ) }
-  ) }
-);
+export type OnNewMessageSubscription = { __typename?: 'Subscription' } & {
+  onNewMessage: { __typename?: 'Message' } & Pick<Message, 'id' | 'text'> & {
+      to: { __typename?: 'User' } & Pick<User, 'id' | 'profileUrl'>;
+      from: { __typename?: 'User' } & Pick<User, 'id' | 'profileUrl'>;
+    };
+};
 
 export type GetUserByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
+export type GetUserByIdQuery = { __typename?: 'Query' } & {
+  user?: Maybe<
+    { __typename?: 'User' } & Pick<
+      User,
+      'name' | 'email' | 'id' | 'username' | 'profileUrl'
+    >
+  >;
+};
 
-export type GetUserByIdQuery = (
-  { __typename?: 'Query' }
-  & { user?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'name' | 'email' | 'id'>
-  )> }
-);
+export type LogoutUserMutationVariables = Exact<{ [key: string]: never }>;
 
-export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
+export type LogoutUserMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'logout'
+>;
 
+export type CurrentUserQueryVariables = Exact<{ [key: string]: never }>;
 
-export type LogoutUserMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'logout'>
-);
-
-export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CurrentUserQuery = (
-  { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'User' }
-    & Pick<User, 'name' | 'id' | 'email' | 'username' | 'provider' | 'profileUrl' | 'socialId'>
-    & { friends: Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'name'>
-    )> }
-  )> }
-);
-
+export type CurrentUserQuery = { __typename?: 'Query' } & {
+  me?: Maybe<
+    { __typename?: 'User' } & Pick<
+      User,
+      | 'name'
+      | 'id'
+      | 'email'
+      | 'username'
+      | 'provider'
+      | 'profileUrl'
+      | 'socialId'
+    > & { friends: Array<{ __typename?: 'User' } & Pick<User, 'name'>> }
+  >;
+};
 
 export const GetMessagesDocument = gql`
-    query getMessages($id: String!) {
-  getMessage(to: $id) {
-    id
-    text
-    to {
+  query getMessages($id: String!) {
+    getMessage(to: $id) {
       id
-      profileUrl
-    }
-    from {
-      id
-      profileUrl
+      text
+      to {
+        id
+        profileUrl
+      }
+      from {
+        id
+        profileUrl
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetMessagesQuery__
@@ -255,33 +221,54 @@ export const GetMessagesDocument = gql`
  *   },
  * });
  */
-export function useGetMessagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, baseOptions);
-      }
-export function useGetMessagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetMessagesQuery, GetMessagesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetMessagesQuery, GetMessagesQueryVariables>(GetMessagesDocument, baseOptions);
-        }
+export function useGetMessagesQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetMessagesQuery,
+    GetMessagesQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<GetMessagesQuery, GetMessagesQueryVariables>(
+    GetMessagesDocument,
+    baseOptions
+  );
+}
+export function useGetMessagesLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetMessagesQuery,
+    GetMessagesQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetMessagesQuery,
+    GetMessagesQueryVariables
+  >(GetMessagesDocument, baseOptions);
+}
 export type GetMessagesQueryHookResult = ReturnType<typeof useGetMessagesQuery>;
-export type GetMessagesLazyQueryHookResult = ReturnType<typeof useGetMessagesLazyQuery>;
-export type GetMessagesQueryResult = ApolloReactCommon.QueryResult<GetMessagesQuery, GetMessagesQueryVariables>;
+export type GetMessagesLazyQueryHookResult = ReturnType<
+  typeof useGetMessagesLazyQuery
+>;
+export type GetMessagesQueryResult = ApolloReactCommon.QueryResult<
+  GetMessagesQuery,
+  GetMessagesQueryVariables
+>;
 export const GetAllConversationsDocument = gql`
-    query getAllConversations {
-  conversations {
-    id
-    text
-    from {
+  query getAllConversations {
+    conversations {
       id
-      name
-      profileUrl
-    }
-    to {
-      id
-      name
-      profileUrl
+      text
+      from {
+        id
+        name
+        profileUrl
+      }
+      to {
+        id
+        name
+        profileUrl
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useGetAllConversationsQuery__
@@ -298,32 +285,58 @@ export const GetAllConversationsDocument = gql`
  *   },
  * });
  */
-export function useGetAllConversationsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllConversationsQuery, GetAllConversationsQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetAllConversationsQuery, GetAllConversationsQueryVariables>(GetAllConversationsDocument, baseOptions);
-      }
-export function useGetAllConversationsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllConversationsQuery, GetAllConversationsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetAllConversationsQuery, GetAllConversationsQueryVariables>(GetAllConversationsDocument, baseOptions);
-        }
-export type GetAllConversationsQueryHookResult = ReturnType<typeof useGetAllConversationsQuery>;
-export type GetAllConversationsLazyQueryHookResult = ReturnType<typeof useGetAllConversationsLazyQuery>;
-export type GetAllConversationsQueryResult = ApolloReactCommon.QueryResult<GetAllConversationsQuery, GetAllConversationsQueryVariables>;
+export function useGetAllConversationsQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetAllConversationsQuery,
+    GetAllConversationsQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<
+    GetAllConversationsQuery,
+    GetAllConversationsQueryVariables
+  >(GetAllConversationsDocument, baseOptions);
+}
+export function useGetAllConversationsLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetAllConversationsQuery,
+    GetAllConversationsQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetAllConversationsQuery,
+    GetAllConversationsQueryVariables
+  >(GetAllConversationsDocument, baseOptions);
+}
+export type GetAllConversationsQueryHookResult = ReturnType<
+  typeof useGetAllConversationsQuery
+>;
+export type GetAllConversationsLazyQueryHookResult = ReturnType<
+  typeof useGetAllConversationsLazyQuery
+>;
+export type GetAllConversationsQueryResult = ApolloReactCommon.QueryResult<
+  GetAllConversationsQuery,
+  GetAllConversationsQueryVariables
+>;
 export const CreateNewMessageDocument = gql`
-    mutation createNewMessage($to: String!, $text: String!) {
-  createNewMessage(data: {text: $text, to: $to}) {
-    id
-    text
-    to {
+  mutation createNewMessage($to: String!, $text: String!) {
+    createNewMessage(data: { text: $text, to: $to }) {
       id
-      profileUrl
-    }
-    from {
-      id
-      profileUrl
+      text
+      to {
+        id
+        profileUrl
+      }
+      from {
+        id
+        profileUrl
+      }
     }
   }
-}
-    `;
-export type CreateNewMessageMutationFn = ApolloReactCommon.MutationFunction<CreateNewMessageMutation, CreateNewMessageMutationVariables>;
+`;
+export type CreateNewMessageMutationFn = ApolloReactCommon.MutationFunction<
+  CreateNewMessageMutation,
+  CreateNewMessageMutationVariables
+>;
 
 /**
  * __useCreateNewMessageMutation__
@@ -343,28 +356,43 @@ export type CreateNewMessageMutationFn = ApolloReactCommon.MutationFunction<Crea
  *   },
  * });
  */
-export function useCreateNewMessageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateNewMessageMutation, CreateNewMessageMutationVariables>) {
-        return ApolloReactHooks.useMutation<CreateNewMessageMutation, CreateNewMessageMutationVariables>(CreateNewMessageDocument, baseOptions);
-      }
-export type CreateNewMessageMutationHookResult = ReturnType<typeof useCreateNewMessageMutation>;
-export type CreateNewMessageMutationResult = ApolloReactCommon.MutationResult<CreateNewMessageMutation>;
-export type CreateNewMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateNewMessageMutation, CreateNewMessageMutationVariables>;
+export function useCreateNewMessageMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    CreateNewMessageMutation,
+    CreateNewMessageMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    CreateNewMessageMutation,
+    CreateNewMessageMutationVariables
+  >(CreateNewMessageDocument, baseOptions);
+}
+export type CreateNewMessageMutationHookResult = ReturnType<
+  typeof useCreateNewMessageMutation
+>;
+export type CreateNewMessageMutationResult = ApolloReactCommon.MutationResult<
+  CreateNewMessageMutation
+>;
+export type CreateNewMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CreateNewMessageMutation,
+  CreateNewMessageMutationVariables
+>;
 export const OnNewMessageDocument = gql`
-    subscription onNewMessage {
-  onNewMessage {
-    id
-    text
-    to {
+  subscription onNewMessage {
+    onNewMessage {
       id
-      profileUrl
-    }
-    from {
-      id
-      profileUrl
+      text
+      to {
+        id
+        profileUrl
+      }
+      from {
+        id
+        profileUrl
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useOnNewMessageSubscription__
@@ -381,20 +409,34 @@ export const OnNewMessageDocument = gql`
  *   },
  * });
  */
-export function useOnNewMessageSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<OnNewMessageSubscription, OnNewMessageSubscriptionVariables>) {
-        return ApolloReactHooks.useSubscription<OnNewMessageSubscription, OnNewMessageSubscriptionVariables>(OnNewMessageDocument, baseOptions);
-      }
-export type OnNewMessageSubscriptionHookResult = ReturnType<typeof useOnNewMessageSubscription>;
-export type OnNewMessageSubscriptionResult = ApolloReactCommon.SubscriptionResult<OnNewMessageSubscription>;
-export const GetUserByIdDocument = gql`
-    query getUserById($id: String!) {
-  user(id: $id) {
-    name
-    email
-    id
-  }
+export function useOnNewMessageSubscription(
+  baseOptions?: ApolloReactHooks.SubscriptionHookOptions<
+    OnNewMessageSubscription,
+    OnNewMessageSubscriptionVariables
+  >
+) {
+  return ApolloReactHooks.useSubscription<
+    OnNewMessageSubscription,
+    OnNewMessageSubscriptionVariables
+  >(OnNewMessageDocument, baseOptions);
 }
-    `;
+export type OnNewMessageSubscriptionHookResult = ReturnType<
+  typeof useOnNewMessageSubscription
+>;
+export type OnNewMessageSubscriptionResult = ApolloReactCommon.SubscriptionResult<
+  OnNewMessageSubscription
+>;
+export const GetUserByIdDocument = gql`
+  query getUserById($id: String!) {
+    user(id: $id) {
+      name
+      email
+      id
+      username
+      profileUrl
+    }
+  }
+`;
 
 /**
  * __useGetUserByIdQuery__
@@ -412,21 +454,45 @@ export const GetUserByIdDocument = gql`
  *   },
  * });
  */
-export function useGetUserByIdQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
-        return ApolloReactHooks.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, baseOptions);
-      }
-export function useGetUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, baseOptions);
-        }
-export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
-export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
-export type GetUserByIdQueryResult = ApolloReactCommon.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
-export const LogoutUserDocument = gql`
-    mutation logoutUser {
-  logout
+export function useGetUserByIdQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    GetUserByIdQuery,
+    GetUserByIdQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(
+    GetUserByIdDocument,
+    baseOptions
+  );
 }
-    `;
-export type LogoutUserMutationFn = ApolloReactCommon.MutationFunction<LogoutUserMutation, LogoutUserMutationVariables>;
+export function useGetUserByIdLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    GetUserByIdQuery,
+    GetUserByIdQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    GetUserByIdQuery,
+    GetUserByIdQueryVariables
+  >(GetUserByIdDocument, baseOptions);
+}
+export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
+export type GetUserByIdLazyQueryHookResult = ReturnType<
+  typeof useGetUserByIdLazyQuery
+>;
+export type GetUserByIdQueryResult = ApolloReactCommon.QueryResult<
+  GetUserByIdQuery,
+  GetUserByIdQueryVariables
+>;
+export const LogoutUserDocument = gql`
+  mutation logoutUser {
+    logout
+  }
+`;
+export type LogoutUserMutationFn = ApolloReactCommon.MutationFunction<
+  LogoutUserMutation,
+  LogoutUserMutationVariables
+>;
 
 /**
  * __useLogoutUserMutation__
@@ -444,28 +510,43 @@ export type LogoutUserMutationFn = ApolloReactCommon.MutationFunction<LogoutUser
  *   },
  * });
  */
-export function useLogoutUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<LogoutUserMutation, LogoutUserMutationVariables>) {
-        return ApolloReactHooks.useMutation<LogoutUserMutation, LogoutUserMutationVariables>(LogoutUserDocument, baseOptions);
-      }
-export type LogoutUserMutationHookResult = ReturnType<typeof useLogoutUserMutation>;
-export type LogoutUserMutationResult = ApolloReactCommon.MutationResult<LogoutUserMutation>;
-export type LogoutUserMutationOptions = ApolloReactCommon.BaseMutationOptions<LogoutUserMutation, LogoutUserMutationVariables>;
+export function useLogoutUserMutation(
+  baseOptions?: ApolloReactHooks.MutationHookOptions<
+    LogoutUserMutation,
+    LogoutUserMutationVariables
+  >
+) {
+  return ApolloReactHooks.useMutation<
+    LogoutUserMutation,
+    LogoutUserMutationVariables
+  >(LogoutUserDocument, baseOptions);
+}
+export type LogoutUserMutationHookResult = ReturnType<
+  typeof useLogoutUserMutation
+>;
+export type LogoutUserMutationResult = ApolloReactCommon.MutationResult<
+  LogoutUserMutation
+>;
+export type LogoutUserMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  LogoutUserMutation,
+  LogoutUserMutationVariables
+>;
 export const CurrentUserDocument = gql`
-    query currentUser {
-  me {
-    name
-    id
-    email
-    username
-    provider
-    profileUrl
-    socialId
-    friends {
+  query currentUser {
+    me {
       name
+      id
+      email
+      username
+      provider
+      profileUrl
+      socialId
+      friends {
+        name
+      }
     }
   }
-}
-    `;
+`;
 
 /**
  * __useCurrentUserQuery__
@@ -482,12 +563,33 @@ export const CurrentUserDocument = gql`
  *   },
  * });
  */
-export function useCurrentUserQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
-        return ApolloReactHooks.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions);
-      }
-export function useCurrentUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<CurrentUserQuery, CurrentUserQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<CurrentUserQuery, CurrentUserQueryVariables>(CurrentUserDocument, baseOptions);
-        }
+export function useCurrentUserQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<
+    CurrentUserQuery,
+    CurrentUserQueryVariables
+  >
+) {
+  return ApolloReactHooks.useQuery<CurrentUserQuery, CurrentUserQueryVariables>(
+    CurrentUserDocument,
+    baseOptions
+  );
+}
+export function useCurrentUserLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+    CurrentUserQuery,
+    CurrentUserQueryVariables
+  >
+) {
+  return ApolloReactHooks.useLazyQuery<
+    CurrentUserQuery,
+    CurrentUserQueryVariables
+  >(CurrentUserDocument, baseOptions);
+}
 export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
-export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
-export type CurrentUserQueryResult = ApolloReactCommon.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
+export type CurrentUserLazyQueryHookResult = ReturnType<
+  typeof useCurrentUserLazyQuery
+>;
+export type CurrentUserQueryResult = ApolloReactCommon.QueryResult<
+  CurrentUserQuery,
+  CurrentUserQueryVariables
+>;

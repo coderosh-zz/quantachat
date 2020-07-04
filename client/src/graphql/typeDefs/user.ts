@@ -6,6 +6,8 @@ export default gql`
       name
       email
       id
+      username
+      profileUrl
     }
   }
 
