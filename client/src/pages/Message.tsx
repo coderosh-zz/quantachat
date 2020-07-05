@@ -52,9 +52,7 @@ const MessagePage: React.FC = () => {
     scrollToBottom(bodyRef, false, true);
   }, [data]);
 
-  if (ConvoLoading) return <div>Loading</div>;
-
-  if (loading) return <div>Loading</div>;
+  if (loading || ConvoLoading) return <div>Loading</div>;
   if (error || !data) return <div>Error</div>;
 
   const msg = data.getMessage.map((m) => ({

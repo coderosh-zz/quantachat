@@ -4,10 +4,11 @@ import {
   GetMessagesQuery,
   GetMessagesDocument,
 } from '../graphql/generated/graphql';
-import { Picker } from 'emoji-mart';
-import 'emoji-mart/css/emoji-mart.css';
 import scrollToBottom from '../utils/scrollToBottom';
 import useComponentDidUpdate from '../hooks/useComponentDidUpdate';
+import ChatFooterContainer from './ChatFooterSubComponents/ChatFooterContainer';
+import FooterButton from './ChatFooterSubComponents/FooterButton';
+import FooterForm from './ChatFooterSubComponents/FooterForm';
 
 interface ChatFooterProps {
   params: any;
@@ -16,9 +17,6 @@ interface ChatFooterProps {
 
 const ChatFooter: React.FC<ChatFooterProps> = (props) => {
   const [input, setInput] = useState('');
-  const [showPicker, setShowPicker] = useState(false);
-
-  const sendFormRef = useRef<HTMLFormElement>(null);
 
   const [createNewMessageMutation, { data }] = useCreateNewMessageMutation({
     variables: {
@@ -51,86 +49,20 @@ const ChatFooter: React.FC<ChatFooterProps> = (props) => {
   }, [data]);
 
   return (
-    <div className="chat-footer flex-none">
-      <div className="flex flex-row items-center p-4">
-        <button
-          type="button"
-          className="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
-        >
-          <svg viewBox="0 0 20 20" className="w-full h-full fill-current">
-            <path d="M11,13 L8,10 L2,16 L11,16 L18,16 L13,11 L11,13 Z M0,3.99406028 C0,2.8927712 0.898212381,2 1.99079514,2 L18.0092049,2 C19.1086907,2 20,2.89451376 20,3.99406028 L20,16.0059397 C20,17.1072288 19.1017876,18 18.0092049,18 L1.99079514,18 C0.891309342,18 0,17.1054862 0,16.0059397 L0,3.99406028 Z M15,9 C16.1045695,9 17,8.1045695 17,7 C17,5.8954305 16.1045695,5 15,5 C13.8954305,5 13,5.8954305 13,7 C13,8.1045695 13.8954305,9 15,9 Z" />
-          </svg>
-        </button>
-        <button
-          type="button"
-          className="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6"
-        >
-          <svg viewBox="0 0 20 20" className="w-full h-full fill-current">
-            <path d="M0,6.00585866 C0,4.89805351 0.893899798,4 2.0048815,4 L5,4 L7,2 L13,2 L15,4 L17.9951185,4 C19.102384,4 20,4.89706013 20,6.00585866 L20,15.9941413 C20,17.1019465 19.1017876,18 18.0092049,18 L1.99079514,18 C0.891309342,18 0,17.1029399 0,15.9941413 L0,6.00585866 Z M10,16 C12.7614237,16 15,13.7614237 15,11 C15,8.23857625 12.7614237,6 10,6 C7.23857625,6 5,8.23857625 5,11 C5,13.7614237 7.23857625,16 10,16 Z M10,14 C11.6568542,14 13,12.6568542 13,11 C13,9.34314575 11.6568542,8 10,8 C8.34314575,8 7,9.34314575 7,11 C7,12.6568542 8.34314575,14 10,14 Z" />
-          </svg>
-        </button>
+    <ChatFooterContainer>
+      <FooterButton>
+        <path d="M11,13 L8,10 L2,16 L11,16 L18,16 L13,11 L11,13 Z M0,3.99406028 C0,2.8927712 0.898212381,2 1.99079514,2 L18.0092049,2 C19.1086907,2 20,2.89451376 20,3.99406028 L20,16.0059397 C20,17.1072288 19.1017876,18 18.0092049,18 L1.99079514,18 C0.891309342,18 0,17.1054862 0,16.0059397 L0,3.99406028 Z M15,9 C16.1045695,9 17,8.1045695 17,7 C17,5.8954305 16.1045695,5 15,5 C13.8954305,5 13,5.8954305 13,7 C13,8.1045695 13.8954305,9 15,9 Z" />
+      </FooterButton>
+      <FooterButton>
+        <path d="M0,6.00585866 C0,4.89805351 0.893899798,4 2.0048815,4 L5,4 L7,2 L13,2 L15,4 L17.9951185,4 C19.102384,4 20,4.89706013 20,6.00585866 L20,15.9941413 C20,17.1019465 19.1017876,18 18.0092049,18 L1.99079514,18 C0.891309342,18 0,17.1029399 0,15.9941413 L0,6.00585866 Z M10,16 C12.7614237,16 15,13.7614237 15,11 C15,8.23857625 12.7614237,6 10,6 C7.23857625,6 5,8.23857625 5,11 C5,13.7614237 7.23857625,16 10,16 Z M10,14 C11.6568542,14 13,12.6568542 13,11 C13,9.34314575 11.6568542,8 10,8 C8.34314575,8 7,9.34314575 7,11 C7,12.6568542 8.34314575,14 10,14 Z" />
+      </FooterButton>
 
-        <form
-          ref={sendFormRef}
-          className="relative flex-grow"
-          onSubmit={(e) => {
-            e.preventDefault();
-            createNewMessageMutation();
-            setInput('');
-            setShowPicker(false);
-          }}
-        >
-          <span
-            style={{
-              opacity: showPicker ? 1 : 0,
-              pointerEvents: showPicker ? 'all' : 'none',
-            }}
-            className="absolute bottom-1 right-0"
-          >
-            <Picker
-              onSelect={(e: any) => {
-                setInput((prev) => prev + e.native);
-              }}
-              theme="dark"
-              title="Messenger"
-              showSkinTones={false}
-              showPreview={false}
-              exclude={['flags']}
-            />
-          </span>
-          <label>
-            <textarea
-              className="rounded-full py-2 pl-3 pr-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in"
-              value={input}
-              onChange={(e) => {
-                setShowPicker(false);
-
-                setInput(e.target.value);
-              }}
-              placeholder="Aa"
-              rows={1}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' && e.shiftKey === false) {
-                  e.preventDefault();
-                  createNewMessageMutation();
-                  setInput('');
-                  setShowPicker(false);
-                }
-              }}
-            ></textarea>
-            <button
-              onClick={() => setShowPicker((prev) => !prev)}
-              type="button"
-              className="absolute top-0 right-0 mt-2 mr-3 flex flex-shrink-0 focus:outline-none block text-blue-600 hover:text-blue-700 w-6 h-6"
-            >
-              <svg viewBox="0 0 20 20" className="w-full h-full fill-current">
-                <path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM6.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm7 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm2.16 3a6 6 0 0 1-11.32 0h11.32z" />
-              </svg>
-            </button>
-          </label>
-        </form>
-      </div>
-    </div>
+      <FooterForm
+        input={input}
+        setInput={setInput}
+        createNewMessageMutation={createNewMessageMutation}
+      />
+    </ChatFooterContainer>
   );
 };
 
