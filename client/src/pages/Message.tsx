@@ -15,6 +15,8 @@ import ChatContainer from '../components/MessageSubComponents/ChatContainer';
 import MessageViews from '../components/MessageSubComponents/MessageViews';
 import scrollToBottom from '../utils/scrollToBottom';
 import useComponentDidUpdate from '../hooks/useComponentDidUpdate';
+import mapMessages from '../utils/mapMessages';
+import messagesUpdateQuery from '../utils/messagesUpdateQuery';
 
 const MessagePage: React.FC = () => {
   const params = useParams() as any;
@@ -33,25 +35,7 @@ const MessagePage: React.FC = () => {
 
     subscribeToMore({
       document: OnNewMessageDocument,
-      updateQuery(prev, data: any) {
-        refetch();
-        console.log(
-          data.subscriptionData.data.onNewMessage.from.id,
-          params.username
-        );
-        if (
-          !prev.getMessage ||
-          data.subscriptionData.data.onNewMessage.from.id === me?.id ||
-          // TODO: Temporary fix, have to fix in server
-          data.subscriptionData.data.onNewMessage.from.id != params.username
-        )
-          return prev;
-
-        const newData = { getMessage: [...prev.getMessage] };
-        newData.getMessage.push(data.subscriptionData.data.onNewMessage);
-
-        return newData;
-      },
+      updateQuery: messagesUpdateQuery(params, me, refetch),
     });
   }, []);
 
@@ -81,18 +65,7 @@ const MessagePage: React.FC = () => {
     profileUrl: m.from.id === me!.id ? m.to.profileUrl : m.from.profileUrl,
   }));
 
-  let msgArr = [];
-  for (let i = 0; i < msg.length; i++) {
-    if (i == 0) {
-      msgArr.push([msg[i]]);
-    } else {
-      if (msg[i - 1].from == msg[i].from) {
-        msgArr[msgArr.length - 1].push(msg[i]);
-      } else {
-        msgArr.push([msg[i]]);
-      }
-    }
-  }
+  const msgArr = mapMessages(msg);
 
   return (
     <MessageContainer>
