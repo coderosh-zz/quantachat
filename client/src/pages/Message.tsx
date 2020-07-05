@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   useGetMessagesQuery,
   OnNewMessageDocument,
@@ -8,8 +9,10 @@ import MessageSidebar from '../components/MessageSidebar';
 import ChatHeader from '../components/ChatHeader';
 import ChatFooter from '../components/ChatFooter';
 import MessageView from '../components/MessageView';
-import { useParams } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext';
+import MessageContainer from '../components/MessageSubComponents/MessageContainer';
+import ChatBodyContainer from '../components/MessageSubComponents/ChatBodyContainer';
+import ChatContainer from '../components/MessageSubComponents/ChatContainer';
 
 export const scrollToBottom = (bodyRef: React.RefObject<HTMLDivElement>) => {
   if (!bodyRef.current) return;
@@ -33,7 +36,6 @@ const MessagePage: React.FC = () => {
       document: OnNewMessageDocument,
       updateQuery(prev, data: any) {
         refetch();
-
         if (
           !prev.getMessage ||
           data.subscriptionData.data.onNewMessage.from.id === me?.id
@@ -41,7 +43,6 @@ const MessagePage: React.FC = () => {
           return prev;
 
         const newData = { getMessage: [...prev.getMessage] };
-
         newData.getMessage.push(data.subscriptionData.data.onNewMessage);
 
         setTimeout(() => {
@@ -66,7 +67,9 @@ const MessagePage: React.FC = () => {
 
   if (loading) return <div>Loading</div>;
   if (error || !data) return <div>Error</div>;
-  const msg = data.getMessage.map((m: any) => ({
+
+  const msg = data.getMessage.map((m) => ({
+    id: m.id,
     text: m.text!,
     from: m.from.id as string,
     to: m.to.id as string,
@@ -87,30 +90,23 @@ const MessagePage: React.FC = () => {
   }
 
   return (
-    <div className="h-screen w-full flex antialiased text-gray-200 bg-gray-900 overflow-hidden">
-      <div className="flex-1 flex flex-col">
-        <main className="flex-grow flex flex-row min-h-0">
-          <MessageSidebar
-            params={params}
-            data={ConvoData}
-            error={ConvoError}
-            loading={ConvoLoading}
-          />
-          <section className="flex flex-col flex-auto border-l border-gray-800">
-            <ChatHeader params={params} />
-            <div
-              ref={bodyRef}
-              className="chat-body p-4 overflow-y-scroll mt-auto"
-            >
-              {msgArr.map((m) => (
-                <MessageView messages={m} key={Math.random()} />
-              ))}
-            </div>
-            <ChatFooter params={params} bodyRef={bodyRef} />
-          </section>
-        </main>
-      </div>
-    </div>
+    <MessageContainer>
+      <MessageSidebar
+        params={params}
+        data={ConvoData}
+        error={ConvoError}
+        loading={ConvoLoading}
+      />
+      <ChatContainer>
+        <ChatHeader params={params} />
+        <ChatBodyContainer bodyRef={bodyRef}>
+          {msgArr.map((m) => (
+            <MessageView messages={m} key={m[0].id} />
+          ))}
+        </ChatBodyContainer>
+        <ChatFooter params={params} bodyRef={bodyRef} />
+      </ChatContainer>
+    </MessageContainer>
   );
 };
 

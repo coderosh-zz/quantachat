@@ -76,6 +76,7 @@ const MessageSidebar: React.FC<MessageSidebarProps> = ({ data, params }) => {
       },
     };
   });
+
   return (
     <MessageSidebarContainer>
       <MessageSidebarHeader profileUrl={me!.profileUrl} />

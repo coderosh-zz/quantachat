@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-// @ts-ignore
 import MessageViewContainer from './MessageViewSubComponents/MessageViewContainer';
 import MessageSenderImage from './MessageViewSubComponents/MessageSenderImage';
 import MessageComponentContainer from './MessageViewSubComponents/MessageComponentsContainer';
@@ -21,7 +20,7 @@ const MessageView: React.FC<MessageViewProps> = ({ messages }) => {
         {isSender && <MessageSenderImage profileUrl={messages[0].profileUrl} />}
         <MessageComponentContainer>
           {messages.map((m) => (
-            <MessageComponent key={Math.random()} {...m} />
+            <MessageComponent key={m.id} {...m} />
           ))}
         </MessageComponentContainer>
       </MessageViewContainer>
