@@ -21,11 +21,11 @@ export default gql`
       id
       email
       username
-      provider
       profileUrl
-      socialId
       friends {
+        id
         name
+        profileUrl
       }
     }
   }
