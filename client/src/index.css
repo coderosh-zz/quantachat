@@ -9537,6 +9537,13 @@ video {
   left: 0;
 }
 
+.inset-1 {
+  top: 50px;
+  right: 50px;
+  bottom: 50px;
+  left: 50px;
+}
+
 .inset-auto {
   top: auto;
   right: auto;
@@ -9552,6 +9559,16 @@ video {
 .inset-x-0 {
   right: 0;
   left: 0;
+}
+
+.inset-y-1 {
+  top: 50px;
+  bottom: 50px;
+}
+
+.inset-x-1 {
+  right: 50px;
+  left: 50px;
 }
 
 .inset-y-auto {
@@ -9578,6 +9595,22 @@ video {
 
 .left-0 {
   left: 0;
+}
+
+.top-1 {
+  top: 50px;
+}
+
+.right-1 {
+  right: 50px;
+}
+
+.bottom-1 {
+  bottom: 50px;
+}
+
+.left-1 {
+  left: 50px;
 }
 
 .top-auto {
@@ -23370,6 +23403,13 @@ textarea {
     left: 0;
   }
 
+  .sm\:inset-1 {
+    top: 50px;
+    right: 50px;
+    bottom: 50px;
+    left: 50px;
+  }
+
   .sm\:inset-auto {
     top: auto;
     right: auto;
@@ -23385,6 +23425,16 @@ textarea {
   .sm\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .sm\:inset-y-1 {
+    top: 50px;
+    bottom: 50px;
+  }
+
+  .sm\:inset-x-1 {
+    right: 50px;
+    left: 50px;
   }
 
   .sm\:inset-y-auto {
@@ -23411,6 +23461,22 @@ textarea {
 
   .sm\:left-0 {
     left: 0;
+  }
+
+  .sm\:top-1 {
+    top: 50px;
+  }
+
+  .sm\:right-1 {
+    right: 50px;
+  }
+
+  .sm\:bottom-1 {
+    bottom: 50px;
+  }
+
+  .sm\:left-1 {
+    left: 50px;
   }
 
   .sm\:top-auto {
@@ -37109,6 +37175,13 @@ textarea {
     left: 0;
   }
 
+  .md\:inset-1 {
+    top: 50px;
+    right: 50px;
+    bottom: 50px;
+    left: 50px;
+  }
+
   .md\:inset-auto {
     top: auto;
     right: auto;
@@ -37124,6 +37197,16 @@ textarea {
   .md\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .md\:inset-y-1 {
+    top: 50px;
+    bottom: 50px;
+  }
+
+  .md\:inset-x-1 {
+    right: 50px;
+    left: 50px;
   }
 
   .md\:inset-y-auto {
@@ -37150,6 +37233,22 @@ textarea {
 
   .md\:left-0 {
     left: 0;
+  }
+
+  .md\:top-1 {
+    top: 50px;
+  }
+
+  .md\:right-1 {
+    right: 50px;
+  }
+
+  .md\:bottom-1 {
+    bottom: 50px;
+  }
+
+  .md\:left-1 {
+    left: 50px;
   }
 
   .md\:top-auto {
@@ -50848,6 +50947,13 @@ textarea {
     left: 0;
   }
 
+  .lg\:inset-1 {
+    top: 50px;
+    right: 50px;
+    bottom: 50px;
+    left: 50px;
+  }
+
   .lg\:inset-auto {
     top: auto;
     right: auto;
@@ -50863,6 +50969,16 @@ textarea {
   .lg\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .lg\:inset-y-1 {
+    top: 50px;
+    bottom: 50px;
+  }
+
+  .lg\:inset-x-1 {
+    right: 50px;
+    left: 50px;
   }
 
   .lg\:inset-y-auto {
@@ -50889,6 +51005,22 @@ textarea {
 
   .lg\:left-0 {
     left: 0;
+  }
+
+  .lg\:top-1 {
+    top: 50px;
+  }
+
+  .lg\:right-1 {
+    right: 50px;
+  }
+
+  .lg\:bottom-1 {
+    bottom: 50px;
+  }
+
+  .lg\:left-1 {
+    left: 50px;
   }
 
   .lg\:top-auto {
@@ -64587,6 +64719,13 @@ textarea {
     left: 0;
   }
 
+  .xl\:inset-1 {
+    top: 50px;
+    right: 50px;
+    bottom: 50px;
+    left: 50px;
+  }
+
   .xl\:inset-auto {
     top: auto;
     right: auto;
@@ -64602,6 +64741,16 @@ textarea {
   .xl\:inset-x-0 {
     right: 0;
     left: 0;
+  }
+
+  .xl\:inset-y-1 {
+    top: 50px;
+    bottom: 50px;
+  }
+
+  .xl\:inset-x-1 {
+    right: 50px;
+    left: 50px;
   }
 
   .xl\:inset-y-auto {
@@ -64628,6 +64777,22 @@ textarea {
 
   .xl\:left-0 {
     left: 0;
+  }
+
+  .xl\:top-1 {
+    top: 50px;
+  }
+
+  .xl\:right-1 {
+    right: 50px;
+  }
+
+  .xl\:bottom-1 {
+    bottom: 50px;
+  }
+
+  .xl\:left-1 {
+    left: 50px;
   }
 
   .xl\:top-auto {

@@ -8,16 +8,12 @@ import {
 import MessageSidebar from '../components/MessageSidebar';
 import ChatHeader from '../components/ChatHeader';
 import ChatFooter from '../components/ChatFooter';
-import MessageView from '../components/MessageView';
 import { AuthContext } from '../contexts/AuthContext';
 import MessageContainer from '../components/MessageSubComponents/MessageContainer';
 import ChatBodyContainer from '../components/MessageSubComponents/ChatBodyContainer';
 import ChatContainer from '../components/MessageSubComponents/ChatContainer';
-
-export const scrollToBottom = (bodyRef: React.RefObject<HTMLDivElement>) => {
-  if (!bodyRef.current) return;
-  bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
-};
+import MessageViews from '../components/MessageSubComponents/MessageViews';
+import scrollToBottom from '../utils/scrollToBottom';
 
 const MessagePage: React.FC = () => {
   const params = useParams() as any;
@@ -100,9 +96,7 @@ const MessagePage: React.FC = () => {
       <ChatContainer>
         <ChatHeader params={params} />
         <ChatBodyContainer bodyRef={bodyRef}>
-          {msgArr.map((m) => (
-            <MessageView messages={m} key={m[0].id} />
-          ))}
+          <MessageViews messages={msgArr} />
         </ChatBodyContainer>
         <ChatFooter params={params} bodyRef={bodyRef} />
       </ChatContainer>
