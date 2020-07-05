@@ -6,7 +6,7 @@ export const UserInfoName: React.FC<{ new: boolean; name: string }> = (
 
 export const UserInfoLastMessage: React.FC<{ lastmsg: string }> = (props) => (
   <div className="min-w-0">
-    <p className="truncate">{props.lastmsg}</p>
+    <p className="truncate break-all">{props.lastmsg.substring(0, 20)}</p>
   </div>
 );
 
