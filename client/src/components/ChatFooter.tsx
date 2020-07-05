@@ -28,6 +28,7 @@ const ChatFooter: React.FC<ChatFooterProps> = (props) => {
     update: (cache, { data }) => {
       try {
         if (!data) return;
+
         const messages = cache.readQuery<GetMessagesQuery>({
           query: GetMessagesDocument,
           variables: { id: data.createNewMessage.to.id },
