@@ -25,6 +25,14 @@ blockquote {
   @apply mr-2 border-l-4 pl-2;
 }
 
+ul {
+  list-style: disc;
+}
+
+textarea {
+  resize: none;
+}
+
 .Toastify__toast {
   min-height: 30px;
   padding: 10px;

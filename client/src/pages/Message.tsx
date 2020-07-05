@@ -64,8 +64,6 @@ const MessagePage: React.FC = () => {
 
   if (ConvoLoading) return <div>Loading</div>;
 
-  console.log(ConvoData);
-
   if (loading) return <div>Loading</div>;
   if (error || !data) return <div>Error</div>;
   const msg = data.getMessage.map((m: any) => ({

@@ -14370,6 +14370,14 @@ blockquote {
   padding-left: 0.5rem;
 }
 
+ul {
+  list-style: disc;
+}
+
+textarea {
+  resize: none;
+}
+
 .Toastify__toast {
   min-height: 30px;
   padding: 10px;

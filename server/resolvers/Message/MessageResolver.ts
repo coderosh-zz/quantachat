@@ -55,7 +55,7 @@ class MessageResolver {
       },
       {
         $project: {
-          _id: '$id',
+          _id: '$from',
           from: '$to',
           to: '$from',
           text: 1,

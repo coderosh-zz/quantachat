@@ -1,21 +1,35 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import ReactMarkdown from 'react-markdown';
+import CodeBlock from './CodeBlock';
+// @ts-ignore
+import emoji from 'emoji-dictionary';
 
 const MessageComponent: React.FC<Message> = (props) => {
   const { me } = useContext(AuthContext);
   const isMe = me!.id === props.from;
 
+  const emojiSupport = (text: any) =>
+    text.value.replace(
+      /:\w+:/gi,
+      (name: string) => emoji.getUnicode(name) || name
+    );
+
   return (
     <div
       className={`flex items-center group ${isMe ? 'flex-row-reverse' : ''}`}
     >
-      <ReactMarkdown
-        className={`px-6 py-3 rounded-full ${
+      <div
+        className={`px-4 py-2 rounded-md ${
           !isMe ? 'bg-gray-800' : 'bg-blue-700'
         } max-w-xs lg:max-w-md text-gray-200`}
-        source={props.text}
-      />
+      >
+        <ReactMarkdown
+          source={props.text.replace(/\n/gi, '  \n')}
+          escapeHtml={true}
+          renderers={{ code: CodeBlock, text: emojiSupport }}
+        />
+      </div>
     </div>
   );
 };
