@@ -14,6 +14,7 @@ import ChatBodyContainer from '../components/MessageSubComponents/ChatBodyContai
 import ChatContainer from '../components/MessageSubComponents/ChatContainer';
 import MessageViews from '../components/MessageSubComponents/MessageViews';
 import scrollToBottom from '../utils/scrollToBottom';
+import useComponentDidUpdate from '../hooks/useComponentDidUpdate';
 
 const MessagePage: React.FC = () => {
   const params = useParams() as any;
@@ -28,6 +29,8 @@ const MessagePage: React.FC = () => {
   } = useGetAllConversationsQuery({});
 
   useEffect(() => {
+    scrollToBottom(bodyRef, false);
+
     subscribeToMore({
       document: OnNewMessageDocument,
       updateQuery(prev, data: any) {
@@ -40,10 +43,6 @@ const MessagePage: React.FC = () => {
 
         const newData = { getMessage: [...prev.getMessage] };
         newData.getMessage.push(data.subscriptionData.data.onNewMessage);
-
-        setTimeout(() => {
-          scrollToBottom(bodyRef);
-        }, 0);
 
         return newData;
       },
@@ -58,6 +57,10 @@ const MessagePage: React.FC = () => {
       scrollToBottom(bodyRef);
     },
   });
+
+  useComponentDidUpdate(() => {
+    scrollToBottom(bodyRef, false, true);
+  }, [data]);
 
   if (ConvoLoading) return <div>Loading</div>;
 

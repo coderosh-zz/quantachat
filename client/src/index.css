@@ -14381,9 +14381,9 @@ video {
   color: rgb(106, 214, 106);
 }
 
-html {
+/* .chat-body {
   scroll-behavior: smooth;
-}
+} */
 
 h1 {
   font-size: 1.5rem;

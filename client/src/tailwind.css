@@ -7,9 +7,9 @@
   color: rgb(106, 214, 106);
 }
 
-html {
+/* .chat-body {
   scroll-behavior: smooth;
-}
+} */
 
 h1 {
   @apply text-2xl;

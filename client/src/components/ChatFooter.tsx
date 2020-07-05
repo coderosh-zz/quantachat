@@ -7,6 +7,7 @@ import {
 import { Picker } from 'emoji-mart';
 import 'emoji-mart/css/emoji-mart.css';
 import scrollToBottom from '../utils/scrollToBottom';
+import useComponentDidUpdate from '../hooks/useComponentDidUpdate';
 
 interface ChatFooterProps {
   params: any;
@@ -19,10 +20,7 @@ const ChatFooter: React.FC<ChatFooterProps> = (props) => {
 
   const sendFormRef = useRef<HTMLFormElement>(null);
 
-  const [
-    createNewMessageMutation,
-    { data, loading: loadingMutation, error: errorMutation },
-  ] = useCreateNewMessageMutation({
+  const [createNewMessageMutation, { data }] = useCreateNewMessageMutation({
     variables: {
       to: props.params.username,
       text: input,
@@ -41,15 +39,15 @@ const ChatFooter: React.FC<ChatFooterProps> = (props) => {
           },
           variables: { id: data.createNewMessage.to.id },
         });
-
-        setTimeout(() => {
-          scrollToBottom(props.bodyRef);
-        }, 0);
       } catch (e) {
         console.log(e);
       }
     },
   });
+
+  useComponentDidUpdate(() => {
+    scrollToBottom(props.bodyRef, true, true);
+  }, [data]);
 
   return (
     <div className="chat-footer flex-none">
