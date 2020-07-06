@@ -1,7 +1,12 @@
 import React, { useState, ChangeEvent } from 'react';
-import { useNoFriendsQuery } from '../graphql/generated/graphql';
-import { Card } from './Dashboard';
+import {
+  useNoFriendsQuery,
+  useAddFriendMutation,
+  NoFriendsQuery,
+  NoFriendsDocument,
+} from '../graphql/generated/graphql';
 import Nav from '../components/Nav';
+import { onError } from 'apollo-link-error';
 
 const AddFriendsPage: React.FC = (props) => {
   const { data, loading, error } = useNoFriendsQuery({});
@@ -49,6 +54,70 @@ const AddFriendsPage: React.FC = (props) => {
           : searchData.map((u) => {
               return <Card key={u.username} {...u} />;
             })}
+      </div>
+    </div>
+  );
+};
+
+const Card: React.FC<{
+  username: string;
+  profileUrl: string;
+  name: string;
+  isFriend?: boolean;
+  id: string;
+}> = (props) => {
+  const [addFriendMutation, { data, loading, error }] = useAddFriendMutation({
+    variables: {
+      id: props.id,
+    },
+    update(cache, { data }) {
+      try {
+        if (!data) return;
+
+        const frns = cache.readQuery<NoFriendsQuery>({
+          query: NoFriendsDocument,
+          variables: { id: data.addFriend.id },
+        });
+
+        cache.writeQuery({
+          query: NoFriendsDocument,
+          data: {
+            NoFriends: frns?.NoFriends.filter(
+              (f) => f.id !== data.addFriend.id
+            ),
+          },
+          variables: { id: data.addFriend.id },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  });
+
+  return (
+    <div className="max-w-sm w-full h-auto py-6 px-3">
+      <div className="bg-white shadow-xl rounded-lg overflow-hidden  border-gray-300 border">
+        <div className="bg-cover bg-center p-4">
+          <img src={props.profileUrl} alt={props.username} />
+        </div>
+        <div className="p-4">
+          <p className="text-3xl text-gray-900">{props.name}</p>
+          <p className="text-gray-700">@{props.username}</p>
+        </div>
+        <div className="flex p-4 border-t border-gray-300 text-gray-700">
+          <div className="flex-1 inline-flex items-center">
+            {props.isFriend ? (
+              <p className="font-bold cursor-pointer">Remove Friend</p>
+            ) : (
+              <p
+                className="font-bold cursor-pointer"
+                onClick={() => addFriendMutation()}
+              >
+                Add Friend
+              </p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

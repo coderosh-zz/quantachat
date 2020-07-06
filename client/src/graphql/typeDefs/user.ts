@@ -39,4 +39,14 @@ export default gql`
       profileUrl
     }
   }
+
+  mutation addFriend($id: String!) {
+    addFriend(id: $id) {
+      id
+      name
+      email
+      username
+      profileUrl
+    }
+  }
 `;

@@ -233,6 +233,19 @@ export type NoFriendsQuery = (
   )> }
 );
 
+export type AddFriendMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type AddFriendMutation = (
+  { __typename?: 'Mutation' }
+  & { addFriend: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'name' | 'email' | 'username' | 'profileUrl'>
+  ) }
+);
+
 
 export const GetMessagesDocument = gql`
     query getMessages($id: String!) {
@@ -541,3 +554,39 @@ export function useNoFriendsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHo
 export type NoFriendsQueryHookResult = ReturnType<typeof useNoFriendsQuery>;
 export type NoFriendsLazyQueryHookResult = ReturnType<typeof useNoFriendsLazyQuery>;
 export type NoFriendsQueryResult = ApolloReactCommon.QueryResult<NoFriendsQuery, NoFriendsQueryVariables>;
+export const AddFriendDocument = gql`
+    mutation addFriend($id: String!) {
+  addFriend(id: $id) {
+    id
+    name
+    email
+    username
+    profileUrl
+  }
+}
+    `;
+export type AddFriendMutationFn = ApolloReactCommon.MutationFunction<AddFriendMutation, AddFriendMutationVariables>;
+
+/**
+ * __useAddFriendMutation__
+ *
+ * To run a mutation, you first call `useAddFriendMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddFriendMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addFriendMutation, { data, loading, error }] = useAddFriendMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAddFriendMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddFriendMutation, AddFriendMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddFriendMutation, AddFriendMutationVariables>(AddFriendDocument, baseOptions);
+      }
+export type AddFriendMutationHookResult = ReturnType<typeof useAddFriendMutation>;
+export type AddFriendMutationResult = ApolloReactCommon.MutationResult<AddFriendMutation>;
+export type AddFriendMutationOptions = ApolloReactCommon.BaseMutationOptions<AddFriendMutation, AddFriendMutationVariables>;
