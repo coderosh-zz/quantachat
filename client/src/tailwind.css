@@ -25,12 +25,13 @@ blockquote {
   @apply mr-2 border-l-4 pl-2;
 }
 
-ul {
-  list-style: disc;
-}
-
 textarea {
   resize: none;
+}
+
+.gradient {
+  /* background: linear-gradient(90deg, #d53369 0%, #daae51 100%); */
+  background: linear-gradient(90deg, #4c43c7 0%, #187a7a 100%);
 }
 
 .Toastify__toast {
