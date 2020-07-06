@@ -7,22 +7,22 @@
   color: rgb(106, 214, 106);
 }
 
-/* .chat-body {
-  scroll-behavior: smooth;
-} */
-
 h1 {
   @apply text-2xl;
 }
+
 h2 {
   @apply text-xl;
 }
+
 h3 {
   @apply text-lg;
 }
 
 blockquote {
-  @apply mr-2 border-l-4 pl-2;
+  @apply border-l-4;
+  @apply pl-2;
+  @apply mr-2;
 }
 
 textarea {
@@ -35,7 +35,7 @@ textarea {
 }
 
 .gradient-2 {
-  background: linear-gradient(to right, #187a7a, #116464);
+  background: linear-gradient(to right, #222c41, #19243b);
 }
 
 .Toastify__toast {
@@ -51,6 +51,7 @@ textarea {
 .group:hover .group-hover\:block {
   display: block;
 }
+
 .hover\:w-64:hover {
   width: 45%;
 }
@@ -59,32 +60,40 @@ textarea {
   width: 2px;
   height: 2px;
 }
+
 ::-webkit-scrollbar-button {
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #2d3748;
-  border: 0px none #ffffff;
+  border: 0 none #fff;
   border-radius: 50px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #2b6cb0;
 }
+
 ::-webkit-scrollbar-thumb:active {
   background: #000000;
 }
+
 ::-webkit-scrollbar-track {
   background: #1a202c;
-  border: 0px none #ffffff;
+  border: 0px none #fff;
   border-radius: 50px;
 }
+
 ::-webkit-scrollbar-track:hover {
-  background: #666666;
+  background: #666;
 }
+
 ::-webkit-scrollbar-track:active {
-  background: #333333;
+  background: #333;
 }
+
 ::-webkit-scrollbar-corner {
   background: transparent;
 }

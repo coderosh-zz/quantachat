@@ -10,9 +10,9 @@ const Nav: React.FC = (props) => {
   };
 
   return (
-    <nav className="flex justify-between w-full text-white p-4 border-b-2 border-blue-600">
+    <nav className="flex justify-between w-full text-white p-4 border-b border-blue-900 px-8">
       <a href="/">
-        <span className="font-semibold text-xl tracking-tight">quantachat</span>
+        <span className="font-semibold text-xl tracking-tight">QuantaChat</span>
       </a>
       <div className="md:items-center md:w-auto flex">
         <div className="flex text-sm">

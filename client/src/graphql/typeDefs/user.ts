@@ -29,4 +29,14 @@ export default gql`
       }
     }
   }
+
+  query noFriends {
+    NoFriends {
+      id
+      email
+      name
+      username
+      profileUrl
+    }
+  }
 `;

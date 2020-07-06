@@ -19,6 +19,7 @@ export type Query = {
   users: Array<User>;
   user?: Maybe<User>;
   me?: Maybe<User>;
+  NoFriends: Array<User>;
   conversations: Array<Message>;
   getMessage: Array<Message>;
 };
@@ -218,6 +219,17 @@ export type CurrentUserQuery = (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name' | 'profileUrl'>
     )> }
+  )> }
+);
+
+export type NoFriendsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NoFriendsQuery = (
+  { __typename?: 'Query' }
+  & { NoFriends: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'name' | 'username' | 'profileUrl'>
   )> }
 );
 
@@ -493,3 +505,39 @@ export function useCurrentUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
 export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
 export type CurrentUserQueryResult = ApolloReactCommon.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
+export const NoFriendsDocument = gql`
+    query noFriends {
+  NoFriends {
+    id
+    email
+    name
+    username
+    profileUrl
+  }
+}
+    `;
+
+/**
+ * __useNoFriendsQuery__
+ *
+ * To run a query within a React component, call `useNoFriendsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNoFriendsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNoFriendsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNoFriendsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<NoFriendsQuery, NoFriendsQueryVariables>) {
+        return ApolloReactHooks.useQuery<NoFriendsQuery, NoFriendsQueryVariables>(NoFriendsDocument, baseOptions);
+      }
+export function useNoFriendsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<NoFriendsQuery, NoFriendsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<NoFriendsQuery, NoFriendsQueryVariables>(NoFriendsDocument, baseOptions);
+        }
+export type NoFriendsQueryHookResult = ReturnType<typeof useNoFriendsQuery>;
+export type NoFriendsLazyQueryHookResult = ReturnType<typeof useNoFriendsLazyQuery>;
+export type NoFriendsQueryResult = ApolloReactCommon.QueryResult<NoFriendsQuery, NoFriendsQueryVariables>;

@@ -53,7 +53,7 @@ app.use(passportSessionMiddleware);
 
 app.use('/auth', authRouter);
 
-(async () => {
+(async (): Promise<void> => {
   const schema = await buildSchema({
     resolvers: Resolvers as any,
     authChecker: isAuth,

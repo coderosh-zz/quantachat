@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import {
   registerDecorator,
@@ -18,8 +19,9 @@ export class UserShouldExistConstraint implements ValidatorConstraintInterface {
   }
 }
 
-export function UserShouldExist(validationOptions?: ValidationOptions) {
-  // eslint-disable-next-line @typescript-eslint/ban-types
+export function UserShouldExist(
+  validationOptions?: ValidationOptions
+): (object: Object, propertyName: string) => void {
   return function (object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
