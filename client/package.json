@@ -43,7 +43,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:css": "postcss src/tailwind.css -o src/index.css",
+    "build:css": "postcss src/assets/tailwind.css -o src/assets/index.css",
     "codegen": "graphql-codegen --config codegen.yml --watch"
   },
   "eslintConfig": {

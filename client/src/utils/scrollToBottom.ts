@@ -24,7 +24,7 @@ function scrollTo(element: HTMLElement, to: number, duration: number) {
     currentTime = 0,
     increment = 20;
 
-  let animateScroll = function () {
+  const animateScroll = () => {
     currentTime += increment;
     var val = easeInOutQuad(currentTime, start, change, duration);
     element.scrollTop = val;
@@ -35,7 +35,7 @@ function scrollTo(element: HTMLElement, to: number, duration: number) {
   animateScroll();
 }
 
-const easeInOutQuad = function (t: number, b: number, c: number, d: number) {
+const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
   t /= d / 2;
   if (t < 1) return (c / 2) * t * t + b;
   t--;

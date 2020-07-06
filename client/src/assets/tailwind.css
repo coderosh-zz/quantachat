@@ -34,6 +34,10 @@ textarea {
   background: linear-gradient(90deg, #4c43c7 0%, #187a7a 100%);
 }
 
+.gradient-2 {
+  background: linear-gradient(to right, #4c43c7, #2a5298);
+}
+
 .Toastify__toast {
   min-height: 30px;
   padding: 10px;

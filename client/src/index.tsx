@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
 import 'react-toastify/dist/ReactToastify.css';
 
-import './index.css';
+import './assets/index.css';
 import App from './App';
 import client from './graphql/client';
 import AuthContextProvider from './contexts/AuthContext';
