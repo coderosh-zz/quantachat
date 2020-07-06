@@ -1,13 +1,17 @@
-import 'reflect-metadata';
 import 'colors';
+import 'reflect-metadata';
+import hpp from 'hpp';
 import http from 'http';
+import helmet from 'helmet';
+import xss from 'xss-clean';
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
-import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import connectMongo from 'connect-mongodb-session';
+import mongoSanitize from 'express-mongo-sanitize';
 import { createOnConnect } from 'graphql-passport';
+import connectMongo from 'connect-mongodb-session';
+import { ApolloServer } from 'apollo-server-express';
 
 import './config/passport';
 import { connectDatabase } from './config/db';
@@ -39,6 +43,10 @@ const passportSessionMiddleware = passport.session();
 
 const app = express();
 
+app.use(xss());
+app.use(hpp());
+app.use(helmet());
+app.use(mongoSanitize());
 app.use(sessionMiddleware);
 app.use(passportMiddleware);
 app.use(passportSessionMiddleware);
