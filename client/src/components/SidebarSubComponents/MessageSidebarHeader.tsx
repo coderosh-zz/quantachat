@@ -10,7 +10,7 @@ const MessageSidebarHeader: React.FC<{ profileUrl: string }> = (props) => (
       />
     </div>
     <p className="text-md font-bold hidden md:block group-hover:block">
-      Messenger
+      QuantaChat
     </p>
     <a
       href="#"

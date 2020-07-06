@@ -5,15 +5,25 @@ import Flex from './ChatHeaderSubComponents/Flex';
 import HeaderButton from './ChatHeaderSubComponents/HeaderButton';
 import HeaderUserImage from './ChatHeaderSubComponents/HeaderUserImage';
 import HeaderUserInfo from './ChatHeaderSubComponents/HeaderUserInfo';
+import { useHistory } from 'react-router-dom';
 
 const ChatHeader: React.FC<{ params: any }> = ({ params }) => {
-  const { data, error } = useGetUserByIdQuery({
+  const { data, error, loading } = useGetUserByIdQuery({
     variables: {
       id: params.username,
     },
   });
 
-  if (error || !data || !data.user) return <div>Something went wrong</div>;
+  const history = useHistory();
+
+  if (loading) return <div>Loading</div>;
+
+  if (error) {
+    history.push('/profile');
+    return null;
+  }
+
+  if (!data || !data.user || error) return <div>Something went wrong</div>;
 
   const { name, profileUrl } = data.user;
 

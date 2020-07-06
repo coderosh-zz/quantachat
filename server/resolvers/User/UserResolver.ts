@@ -25,7 +25,11 @@ class UserResolver {
   async user(@Arg('id') id: string): Promise<UserClass | null> {
     if (!isValidObjectId(id)) return null;
 
-    return await User.findById(id);
+    const user = await User.findById(id);
+
+    if (!user) throw new ApolloError('Not Found');
+
+    return user;
   }
 
   // @Authorized()

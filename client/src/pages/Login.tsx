@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div
-      style={{ height: '100vh' }}
+      style={{ minHeight: '100vh' }}
       className="leading-normal tracking-normal text-white gradient"
     >
       <Nav />
@@ -23,7 +23,9 @@ const LoginPage: React.FC = () => {
             <p className="uppercase tracking-loose w-full">
               It's messenger but not by facebook.
             </p>
-            <h1 className="my-4 text-5xl font-bold leading-tight">messenger</h1>
+            <h1 className="my-4 text-5xl font-bold leading-tight">
+              quantachat
+            </h1>
             <p className="leading-normal text-2xl mb-8">
               Message your friend anywhere anytime.
             </p>
@@ -35,7 +37,7 @@ const LoginPage: React.FC = () => {
               But You Need To Login First
             </button>
           </div>
-          <div className="w-full md:w-3/5 py-6 text-center">
+          <div className="hidden md:w-3/5 md:block py-6 text-center">
             <img className="w-full md:w-4/5 z-50" src={herosvg} />
           </div>
         </div>
