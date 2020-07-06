@@ -36,6 +36,7 @@ type Query {
   conversations: [Message!]!
   getMessage(to: String!): [Message!]!
   me: User
+  NoFriends: [User!]!
   user(id: String!): User
   users: [User!]!
 }

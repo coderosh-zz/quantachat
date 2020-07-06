@@ -10,6 +10,8 @@ const DashboardPage: React.FC = () => {
       {me?.friends.map((f) => (
         <div>{f.name}</div>
       ))}
+
+      <h3>Add Friends</h3>
     </div>
   );
 };

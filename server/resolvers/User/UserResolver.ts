@@ -127,6 +127,26 @@ class UserResolver {
       throw new ApolloError(e);
     }
   }
+
+  @Query(() => [UserClass])
+  @Authorized()
+  async NoFriends(@Ctx() context: Context): Promise<UserClass[]> {
+    try {
+      const NoFriends = await User.find({
+        _id: {
+          $not: {
+            $in: [
+              ...(context.currentUser.friends as any),
+              context.currentUser._id,
+            ] as any,
+          },
+        },
+      });
+      return NoFriends;
+    } catch (e) {
+      throw new ApolloError(e);
+    }
+  }
 }
 
 export default UserResolver;
