@@ -12,6 +12,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 import { createOnConnect } from 'graphql-passport';
 import connectMongo from 'connect-mongodb-session';
 import { ApolloServer } from 'apollo-server-express';
+import expressStaticGzip from 'express-static-gzip';
 
 import './config/passport';
 import { connectDatabase } from './config/db';
@@ -19,6 +20,7 @@ import Resolvers from './resolvers/Resolvers';
 import authRouter from './routes/auth';
 import isAuth from './utils/isAuth';
 import contextFn, { pubsub } from './Context';
+import path from 'path';
 
 const MongoStore = connectMongo(session);
 const sessionMiddleware = session({
@@ -82,8 +84,16 @@ app.use('/auth', authRouter);
   });
 
   server.applyMiddleware({ app });
+
   const httpServer = http.createServer(app);
+
   server.installSubscriptionHandlers(httpServer);
+  app.use('/', expressStaticGzip('client/build', {}));
+  if (process.env.NODE_ENV === 'production') {
+    app.get('/*', function (req, res) {
+      res.sendFile(path.join(__dirname, '../client/build/index.html'));
+    });
+  }
 
   await connectDatabase();
 

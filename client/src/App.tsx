@@ -30,6 +30,7 @@ function App() {
           <PublicRoute path="/" exact={true} component={LoginPage} />
           <PrivateRoute path="/profile/:id" component={ProfilePage} />
           <PrivateRoute path="/message/:username" component={MessagePage} />
+          <PrivateRoute path="/message" component={MessagePage} />
           <Redirect to="/" />
         </Switch>
       </Router>

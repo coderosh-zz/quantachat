@@ -2,3 +2,5 @@
 *.env
 *.test.text
 *.eslintcache
+/dist
+**/build

@@ -30,12 +30,16 @@ const MessagePage: React.FC = () => {
     refetch,
   } = useGetAllConversationsQuery({});
 
+  const prm = {
+    username: params.username || me?.id,
+  };
+
   useEffect(() => {
     scrollToBottom(bodyRef, false);
 
     const unsubscribe = subscribeToMore({
       document: OnNewMessageDocument,
-      updateQuery: messagesUpdateQuery(params, me, refetch),
+      updateQuery: messagesUpdateQuery(prm, me, refetch),
     });
 
     return () => unsubscribe();
