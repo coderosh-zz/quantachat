@@ -11,7 +11,7 @@
     "build:client": "npm run build --prefix client",
     "build:css": "npm run build:css --prefix client",
     "develop": "cross-env NODE_ENV=development concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "build": "concurrently \"npm run build:server\" \"npm run build:client\"",
+    "build": "concurrently \"npm run build:server\" \"npm run build:css\" \"npm run build:client\"",
     "lint": "eslint . --fix --ext .ts",
     "codegen": "npm run codegen --prefix client",
     "start": "node dist/server.js",

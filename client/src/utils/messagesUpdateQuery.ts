@@ -7,7 +7,6 @@ const messagesUpdateQuery = (params: any, me: any, refetch: any) => (
   if (
     !prev.getMessage ||
     data.subscriptionData.data.onNewMessage.from.id === me?.id ||
-    // TODO: Temporary fix, have to fix in server
     data.subscriptionData.data.onNewMessage.from.id != params.username
   )
     return prev;
