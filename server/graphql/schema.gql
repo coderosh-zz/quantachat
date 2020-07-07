@@ -33,6 +33,7 @@ type Mutation {
 }
 
 type Query {
+  allFriends: [User!]!
   conversations: [Message!]!
   getMessage(to: String!): [Message!]!
   me: User

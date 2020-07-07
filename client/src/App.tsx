@@ -7,9 +7,7 @@ import { AuthContext } from './contexts/AuthContext';
 import ProfilePage from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import PublicRoute from './components/PublicRoute';
-import DashboardPage from './pages/Dashboard';
 import MessagePage from './pages/Message';
-import AddFriendsPage from './pages/AddFriends';
 
 function App() {
   const authContext = useContext(AuthContext);
@@ -31,8 +29,6 @@ function App() {
         <Switch>
           <PublicRoute path="/" exact={true} component={LoginPage} />
           <PrivateRoute path="/profile" component={ProfilePage} />
-          <PrivateRoute path="/dashboard" component={DashboardPage} />
-          <PrivateRoute path="/addfriends" component={AddFriendsPage} />
           <PrivateRoute path="/message/:username" component={MessagePage} />
           <Redirect to="/" />
         </Switch>

@@ -16,6 +16,7 @@ import MessageSidebarContainer from './SidebarSubComponents/MessageSidebarContai
 import MessageSidebarSearchBox from './SidebarSubComponents/MessageSidebarSearchBox';
 import MessageSidebarHeader from './SidebarSubComponents/MessageSidebarHeader';
 import SidebarUserComponentContainer from './SidebarSubComponents/SidebarUserComponentContainer';
+import { useGetAllUsersQuery } from '../graphql/generated/graphql';
 
 interface UserComponentProps {
   active?: boolean;
@@ -61,7 +62,10 @@ const MessageSidebar: React.FC<MessageSidebarProps> = ({ data, params }) => {
   const [searchInput, setSearchInput] = useState('');
   const [searchDatas, setSearchDatas] = useState<Array<any>>([]);
 
-  if (!data) return <div>Something went wrong</div>;
+  const { data: allUsersData, loading } = useGetAllUsersQuery();
+
+  if (loading) return <div>Loading</div>;
+  if (!data || !allUsersData) return <div>Something went wrong</div>;
 
   const reqData: UserComponentProps[] = mapUsersToData(
     data.conversations,
@@ -73,9 +77,13 @@ const MessageSidebar: React.FC<MessageSidebarProps> = ({ data, params }) => {
     e.preventDefault();
     setSearchInput(e.target.value);
     const results: any = [];
-    me?.friends.map((friend: { name: string }) => {
-      friend.name.toLowerCase().includes(e.target.value.toLowerCase().trim()) &&
-        results.push(friend);
+    allUsersData.users.map((u) => {
+      const text = e.target.value.toLowerCase().trim();
+      if (
+        u.name.toLowerCase().includes(text) ||
+        u.username.toLowerCase().includes(text)
+      )
+        results.push(u);
     });
     setSearchDatas(results);
   };

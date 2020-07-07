@@ -38,6 +38,41 @@ class UserResolver {
     return context.getUser();
   }
 
+  @Query(() => [UserClass])
+  @Authorized()
+  async NoFriends(@Ctx() context: Context): Promise<UserClass[]> {
+    try {
+      const NoFriends = await User.find({
+        _id: {
+          $not: {
+            $in: [
+              ...(context.currentUser.friends as any),
+              context.currentUser._id,
+            ] as any,
+          },
+        },
+      });
+      return NoFriends;
+    } catch (e) {
+      throw new ApolloError(e);
+    }
+  }
+
+  @Authorized()
+  @Query(() => [UserClass])
+  async allFriends(@Ctx() context: Context): Promise<UserClass[]> {
+    try {
+      const friends = await User.find({
+        _id: {
+          $in: context.currentUser.friends as any,
+        },
+      });
+      return friends;
+    } catch (e) {
+      throw new ApolloError(e);
+    }
+  }
+
   @Authorized()
   @Mutation(() => UserClass)
   async addFriend(
@@ -123,26 +158,6 @@ class UserResolver {
       const friends = await User.find({ _id: { $in: parent.friends } });
       if (!friends) throw new ApolloError('Something went wrong');
       return friends;
-    } catch (e) {
-      throw new ApolloError(e);
-    }
-  }
-
-  @Query(() => [UserClass])
-  @Authorized()
-  async NoFriends(@Ctx() context: Context): Promise<UserClass[]> {
-    try {
-      const NoFriends = await User.find({
-        _id: {
-          $not: {
-            $in: [
-              ...(context.currentUser.friends as any),
-              context.currentUser._id,
-            ] as any,
-          },
-        },
-      });
-      return NoFriends;
     } catch (e) {
       throw new ApolloError(e);
     }

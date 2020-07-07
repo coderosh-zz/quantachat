@@ -11,6 +11,16 @@ export default gql`
     }
   }
 
+  query getAllUsers {
+    users {
+      name
+      email
+      id
+      username
+      profileUrl
+    }
+  }
+
   mutation logoutUser {
     logout
   }
@@ -22,31 +32,46 @@ export default gql`
       email
       username
       profileUrl
-      friends {
-        id
-        name
-        profileUrl
-      }
     }
   }
 
-  query noFriends {
-    NoFriends {
-      id
-      email
-      name
-      username
-      profileUrl
-    }
-  }
+  # query noFriends {
+  #   NoFriends {
+  #     id
+  #     email
+  #     name
+  #     username
+  #     profileUrl
+  #   }
+  # }
 
-  mutation addFriend($id: String!) {
-    addFriend(id: $id) {
-      id
-      name
-      email
-      username
-      profileUrl
-    }
-  }
+  # query allFriends {
+  #   allFriends {
+  #     id
+  #     email
+  #     name
+  #     username
+  #     profileUrl
+  #   }
+  # }
+
+  # mutation addFriend($id: String!) {
+  #   addFriend(id: $id) {
+  #     id
+  #     name
+  #     email
+  #     username
+  #     profileUrl
+  #   }
+  # }
+
+  # mutation removeFriend($id: String!) {
+  #   removeFriend(id: $id) {
+  #     id
+  #     name
+  #     email
+  #     username
+  #     profileUrl
+  #   }
+  # }
 `;

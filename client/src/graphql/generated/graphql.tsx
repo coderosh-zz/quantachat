@@ -20,6 +20,7 @@ export type Query = {
   user?: Maybe<User>;
   me?: Maybe<User>;
   NoFriends: Array<User>;
+  allFriends: Array<User>;
   conversations: Array<Message>;
   getMessage: Array<Message>;
 };
@@ -199,6 +200,17 @@ export type GetUserByIdQuery = (
   )> }
 );
 
+export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUsersQuery = (
+  { __typename?: 'Query' }
+  & { users: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'name' | 'email' | 'id' | 'username' | 'profileUrl'>
+  )> }
+);
+
 export type LogoutUserMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -215,35 +227,7 @@ export type CurrentUserQuery = (
   & { me?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'name' | 'id' | 'email' | 'username' | 'profileUrl'>
-    & { friends: Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'name' | 'profileUrl'>
-    )> }
   )> }
-);
-
-export type NoFriendsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NoFriendsQuery = (
-  { __typename?: 'Query' }
-  & { NoFriends: Array<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'name' | 'username' | 'profileUrl'>
-  )> }
-);
-
-export type AddFriendMutationVariables = Exact<{
-  id: Scalars['String'];
-}>;
-
-
-export type AddFriendMutation = (
-  { __typename?: 'Mutation' }
-  & { addFriend: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'name' | 'email' | 'username' | 'profileUrl'>
-  ) }
 );
 
 
@@ -448,6 +432,42 @@ export function useGetUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
 export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
 export type GetUserByIdQueryResult = ApolloReactCommon.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export const GetAllUsersDocument = gql`
+    query getAllUsers {
+  users {
+    name
+    email
+    id
+    username
+    profileUrl
+  }
+}
+    `;
+
+/**
+ * __useGetAllUsersQuery__
+ *
+ * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUsersQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+      }
+export function useGetAllUsersLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions);
+        }
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>;
+export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>;
+export type GetAllUsersQueryResult = ApolloReactCommon.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>;
 export const LogoutUserDocument = gql`
     mutation logoutUser {
   logout
@@ -485,11 +505,6 @@ export const CurrentUserDocument = gql`
     email
     username
     profileUrl
-    friends {
-      id
-      name
-      profileUrl
-    }
   }
 }
     `;
@@ -518,75 +533,3 @@ export function useCurrentUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
 export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
 export type CurrentUserQueryResult = ApolloReactCommon.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
-export const NoFriendsDocument = gql`
-    query noFriends {
-  NoFriends {
-    id
-    email
-    name
-    username
-    profileUrl
-  }
-}
-    `;
-
-/**
- * __useNoFriendsQuery__
- *
- * To run a query within a React component, call `useNoFriendsQuery` and pass it any options that fit your needs.
- * When your component renders, `useNoFriendsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNoFriendsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useNoFriendsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<NoFriendsQuery, NoFriendsQueryVariables>) {
-        return ApolloReactHooks.useQuery<NoFriendsQuery, NoFriendsQueryVariables>(NoFriendsDocument, baseOptions);
-      }
-export function useNoFriendsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<NoFriendsQuery, NoFriendsQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<NoFriendsQuery, NoFriendsQueryVariables>(NoFriendsDocument, baseOptions);
-        }
-export type NoFriendsQueryHookResult = ReturnType<typeof useNoFriendsQuery>;
-export type NoFriendsLazyQueryHookResult = ReturnType<typeof useNoFriendsLazyQuery>;
-export type NoFriendsQueryResult = ApolloReactCommon.QueryResult<NoFriendsQuery, NoFriendsQueryVariables>;
-export const AddFriendDocument = gql`
-    mutation addFriend($id: String!) {
-  addFriend(id: $id) {
-    id
-    name
-    email
-    username
-    profileUrl
-  }
-}
-    `;
-export type AddFriendMutationFn = ApolloReactCommon.MutationFunction<AddFriendMutation, AddFriendMutationVariables>;
-
-/**
- * __useAddFriendMutation__
- *
- * To run a mutation, you first call `useAddFriendMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddFriendMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [addFriendMutation, { data, loading, error }] = useAddFriendMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useAddFriendMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddFriendMutation, AddFriendMutationVariables>) {
-        return ApolloReactHooks.useMutation<AddFriendMutation, AddFriendMutationVariables>(AddFriendDocument, baseOptions);
-      }
-export type AddFriendMutationHookResult = ReturnType<typeof useAddFriendMutation>;
-export type AddFriendMutationResult = ApolloReactCommon.MutationResult<AddFriendMutation>;
-export type AddFriendMutationOptions = ApolloReactCommon.BaseMutationOptions<AddFriendMutation, AddFriendMutationVariables>;
