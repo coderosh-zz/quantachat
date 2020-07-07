@@ -28,7 +28,7 @@ function App() {
       <Router>
         <Switch>
           <PublicRoute path="/" exact={true} component={LoginPage} />
-          <PrivateRoute path="/profile" component={ProfilePage} />
+          <PrivateRoute path="/profile/:id" component={ProfilePage} />
           <PrivateRoute path="/message/:username" component={MessagePage} />
           <Redirect to="/" />
         </Switch>

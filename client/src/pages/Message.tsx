@@ -33,11 +33,13 @@ const MessagePage: React.FC = () => {
   useEffect(() => {
     scrollToBottom(bodyRef, false);
 
-    subscribeToMore({
+    const unsubscribe = subscribeToMore({
       document: OnNewMessageDocument,
       updateQuery: messagesUpdateQuery(params, me, refetch),
     });
-  }, []);
+
+    return () => unsubscribe();
+  }, [params]);
 
   const { data, error, loading, subscribeToMore } = useGetMessagesQuery({
     variables: {
