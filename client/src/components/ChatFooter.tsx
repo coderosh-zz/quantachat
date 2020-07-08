@@ -42,6 +42,9 @@ const ChatFooter: React.FC<ChatFooterProps> = (props) => {
         console.log(e);
       }
     },
+    onCompleted() {
+      setInput('');
+    },
   });
 
   useComponentDidUpdate(() => {
@@ -50,7 +53,10 @@ const ChatFooter: React.FC<ChatFooterProps> = (props) => {
 
   return (
     <ChatFooterContainer>
-      <FooterButton />
+      <FooterButton
+        setInput={setInput}
+        createNewMessageMutation={createNewMessageMutation}
+      />
 
       <FooterForm
         input={input}

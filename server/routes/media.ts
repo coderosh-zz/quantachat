@@ -17,10 +17,10 @@ const upload = multer({
 
 router.post('/photo', upload.single('photo'), (req: Request, res: Response) => {
   if (!req.file) return res.json({ image: null });
-  const { filename: image } = req.file;
+  const image = req.file;
 
   return res.json({
-    image,
+    image: 'http://localhost:4000/images/' + image.filename,
   });
 });
 

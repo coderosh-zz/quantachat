@@ -92,6 +92,8 @@ app.use('/upload', mediadRouter);
   const httpServer = http.createServer(app);
 
   server.installSubscriptionHandlers(httpServer);
+
+  app.use('/images', express.static('images'));
   app.use('/', expressStaticGzip('client/build', {}));
   if (process.env.NODE_ENV === 'production') {
     app.get('/*', function (req, res) {
