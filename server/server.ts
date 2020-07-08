@@ -1,6 +1,7 @@
 import 'colors';
 import 'reflect-metadata';
 import hpp from 'hpp';
+import cors from 'cors';
 import http from 'http';
 import helmet from 'helmet';
 import xss from 'xss-clean';
@@ -18,6 +19,7 @@ import './config/passport';
 import { connectDatabase } from './config/db';
 import Resolvers from './resolvers/Resolvers';
 import authRouter from './routes/auth';
+import mediadRouter from './routes/media';
 import isAuth from './utils/isAuth';
 import contextFn, { pubsub } from './Context';
 import path from 'path';
@@ -47,6 +49,7 @@ const app = express();
 
 app.use(xss());
 app.use(hpp());
+app.use(cors());
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(sessionMiddleware);
@@ -54,6 +57,7 @@ app.use(passportMiddleware);
 app.use(passportSessionMiddleware);
 
 app.use('/auth', authRouter);
+app.use('/upload', mediadRouter);
 
 (async (): Promise<void> => {
   const schema = await buildSchema({
