@@ -1,5 +1,8 @@
 import multer from 'multer';
 import { Request, Response, Router } from 'express';
+import sharp from 'sharp';
+import fs from 'fs';
+import path from 'path';
 
 const router = Router();
 
@@ -15,13 +18,22 @@ const upload = multer({
   }),
 });
 
-router.post('/photo', upload.single('photo'), (req: Request, res: Response) => {
-  if (!req.file) return res.json({ image: null });
-  const image = req.file;
+router.post(
+  '/photo',
+  upload.single('photo'),
+  async (req: Request, res: Response) => {
+    if (!req.file) return res.json({ image: null });
+    const image = req.file;
 
-  return res.json({
-    image: 'http://localhost:4000/images/' + image.filename,
-  });
-});
+    await sharp(req.file.path)
+      .resize(700)
+      .toFile(path.resolve('images', 'resized' + image.filename));
+    fs.unlinkSync(req.file.path);
+
+    return res.json({
+      image: 'http://localhost:4000/images/' + 'resized' + image.filename,
+    });
+  }
+);
 
 export default router;
