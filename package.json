@@ -23,7 +23,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-syntax-highlighter": "^11.0.4",
     "apollo-server-express": "^2.15.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.12.2",
     "colors": "^1.4.0",
