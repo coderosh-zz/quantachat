@@ -47,7 +47,7 @@
     "querystring": "^0.2.0",
     "react-showdown": "^2.1.0",
     "reflect-metadata": "^0.1.13",
-    "sharp": "^0.25.4",
+    "sharp": "^0.30.5",
     "showdown-highlight": "^2.1.4",
     "showdown-youtube": "^1.2.1",
     "slugify": "^1.4.4",
